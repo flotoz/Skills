@@ -1,0 +1,14 @@
+{
+  "name": "skill-factory",
+  "displayName": "Skill Factory",
+  "version": "0.1.0",
+  "description": "Create, test with fresh subagents, register and release agent skills following this repository's rules.",
+  "author": {
+    "name": "Florian METOZ",
+    "url": "https://github.com/flotoz"
+  },
+  "homepage": "https://github.com/flotoz/Skills",
+  "repository": "https://github.com/flotoz/Skills",
+  "license": "MIT",
+  "keywords": ["skills", "authoring", "evals", "subagents", "release"]
+}
