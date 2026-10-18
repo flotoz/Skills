@@ -4,6 +4,10 @@ Official, read-only Finary connector. The user signs in with their Finary
 account and clicks **Authorize read-only access**. No API key, no bank
 credentials. Show the user only the section for their client.
 
+Labels in **bold** come from Finary's English help. Do not translate them as
+if quoting the app: write "the option *Allow AI assistants (MCP)* (its
+wording may differ in your app's language)".
+
 - Server URL: `https://public-api.finary.com/mcp`
 - Official guide: <https://help.finary.com/en/articles/16335735>
 

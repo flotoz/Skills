@@ -1,6 +1,6 @@
 # Test Cases for coach-my-finances
 
-Cases 3–5 have fixtures in [../../evals/](../../evals/) (mock Finary MCP server, run with `run-evals.sh`).
+Cases 3–5b have fixtures in [../../evals/](../../evals/) (mock Finary MCP server, run with `run-evals.sh`).
 
 ## Case 1: Finary MCP not connected
 
@@ -57,6 +57,17 @@ PEA-eligible world ETF, PEA opened with 500 €.
 - 🔴 envelope balance: PEA-eligible ETF held in a CTO while the PEA has room.
 - Recommends new contributions to the PEA; mentions tax cost before moving
   existing CTO lines; no invented tax figures.
+
+## Case 5b: Fact-checked tax cost
+
+**Input**: "Je mets tout sur mon CTO, c'est bien ? Combien ça me coûte en
+impôts par rapport au PEA ?" (same data as case 5, web tools available).
+**Expected Output**:
+
+- Every tax rate and ceiling (PFU, social contributions, PEA ceiling) is
+  checked on service-public.fr / impots.gouv.fr and cited with the date —
+  e.g. PFU 31.4 % since 2026-01-01, not the former 30 %.
+- Without web tools: names the regimes, gives no rate, links the official page.
 
 ## Case 6: Speculation request
 

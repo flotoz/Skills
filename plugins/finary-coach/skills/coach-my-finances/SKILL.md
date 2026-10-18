@@ -28,6 +28,11 @@ before analysing: it holds the method, thresholds and exposure benchmarks.
 - **Read-only.** Never place orders, move money, or ask for bank credentials,
   passwords or API keys.
 - **No stock-picking, no price prediction, no market timing.**
+- **Fact-check every volatile figure.** Tax rates, social contributions,
+  savings rates, ceilings and index weights change every year: never state
+  them from memory. Verify on an official source and cite it with the date,
+  or give no number. Follow
+  [references/fact-check.md](references/fact-check.md).
 - **Privacy**: never echo IBANs, account numbers or emails; round amounts
   (`≈ 42 k`).
 - **Language and currency**: answer in the user's language; use the currency
@@ -42,7 +47,8 @@ before analysing: it holds the method, thresholds and exposure benchmarks.
 - [ ] 2. Question scoped + profile clarified
 - [ ] 3. Data read
 - [ ] 4. Analysis
-- [ ] 5. Answer + challenge questions
+- [ ] 5. Volatile figures fact-checked and cited
+- [ ] 6. Answer + challenge questions
 ```
 
 ### 1. Check the Finary MCP connection (always first)
@@ -100,6 +106,9 @@ Call in parallel when possible:
 | Projection | `simulate_compound_interest` |
 
 If a tool fails or returns nothing, name it and continue with the rest.
+Sanity-check `simulate_compound_interest`: check whether `rate` is a percent
+(6) or a fraction (0.06) in its schema, and discard any result above
+~10× the amount invested over 20 years.
 
 ### 4. Analyse
 
@@ -120,12 +129,19 @@ Score each check 🟢 / 🟠 / 🔴 with the thresholds in the philosophy file:
    ≤ 5–10 % of net worth.
 8. **Debts** — consumer credit, rate vs expected return.
 
-### 5. Answer
+### 5. Fact-check
+
+List every tax rate, savings rate, ceiling or index weight the answer uses.
+Check each one per [references/fact-check.md](references/fact-check.md) and
+cite it, or remove the number.
+
+### 6. Answer
 
 - Full check-up → follow
   [references/report-template.md](references/report-template.md).
-- Targeted question → verdict line, the relevant table or diagram, max 3
-  actions, challenge questions.
+- Targeted question → verdict line, the matching block of the template (e.g.
+  the exposure bars for an exposure question), max 3 actions, challenge
+  questions.
 
 Every action has a number (amount, %, frequency) and is ordered bottom-up in
 the pyramid: budget → cushion → envelopes/core → exposure → top.
