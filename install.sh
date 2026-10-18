@@ -66,9 +66,19 @@ if [[ ${#SKILL_DIRS[@]} -eq 0 ]]; then
   exit 1
 fi
 
+selected() {
+  local name plugin
+  name="$(basename "$1")"
+  plugin="$(basename "$(dirname "$(dirname "$1")")")"
+  [[ ${#SKILLS[@]} -eq 0 || " ${SKILLS[*]} " =~ " $name " ]] &&
+    [[ ${#PLUGINS[@]} -eq 0 || " ${PLUGINS[*]} " =~ " $plugin " ]]
+}
+
 if [[ $LIST_ONLY -eq 1 ]]; then
   echo "Available skills (plugin/skill):"
-  for dir in "${SKILL_DIRS[@]}"; do echo "  - $(basename "$(dirname "$(dirname "$dir")")")/$(basename "$dir")"; done
+  for dir in "${SKILL_DIRS[@]}"; do
+    selected "$dir" && echo "  - $(basename "$(dirname "$(dirname "$dir")")")/$(basename "$dir")"
+  done
   exit 0
 fi
 
@@ -101,9 +111,7 @@ installed=0
 for dir in "${SKILL_DIRS[@]}"; do
   name="$(basename "$dir")"
   plugin_dir="$(dirname "$(dirname "$dir")")"
-  plugin="$(basename "$plugin_dir")"
-  if [[ ${#SKILLS[@]} -gt 0 && ! " ${SKILLS[*]} " =~ " $name " ]]; then continue; fi
-  if [[ ${#PLUGINS[@]} -gt 0 && ! " ${PLUGINS[*]} " =~ " $plugin " ]]; then continue; fi
+  selected "$dir" || continue
   for agent in "${AGENT_LIST[@]}"; do
     dest="$(target_dir "$agent")/$name"
     mkdir -p "$(dirname "$dest")"

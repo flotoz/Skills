@@ -9,10 +9,14 @@
   & ([scriptblock]::Create((irm https://raw.githubusercontent.com/flotoz/Skills/main/install.ps1))) -Skill coach-my-finances -Agent all
 
 .EXAMPLE
+  & ([scriptblock]::Create((irm https://raw.githubusercontent.com/flotoz/Skills/main/install.ps1))) -Plugin finary-coach
+
+.EXAMPLE
   .\install.ps1 -List
 #>
 param(
   [string[]]$Skill = @(),
+  [string[]]$Plugin = @(),
   [ValidateSet('claude', 'codex', 'cursor', 'all')]
   [string[]]$Agent = @('claude'),
   [switch]$Project,
@@ -45,9 +49,15 @@ try {
 
   if ($skillDirs.Count -eq 0) { throw "No skills found in $src." }
 
+  # -Skill and -Plugin narrow the selection, for -List as for installing.
+  $skillDirs = @($skillDirs | Where-Object {
+    ($Skill.Count -eq 0 -or $Skill -contains $_.Name) -and
+    ($Plugin.Count -eq 0 -or $Plugin -contains $_.Parent.Parent.Name)
+  })
+
   if ($List) {
-    Write-Host 'Available skills:'
-    $skillDirs | ForEach-Object { Write-Host "  - $($_.Name)" }
+    Write-Host 'Available skills (plugin/skill):'
+    $skillDirs | ForEach-Object { Write-Host "  - $($_.Parent.Parent.Name)/$($_.Name)" }
     return
   }
 
@@ -67,25 +77,28 @@ try {
 
   $installed = 0
   foreach ($dir in $skillDirs) {
-    if ($Skill.Count -gt 0 -and $Skill -notcontains $dir.Name) { continue }
+    $pluginDir = $dir.Parent.Parent
     foreach ($a in $Agent) {
       $dest = Join-Path (Get-TargetDir $a) $dir.Name
       New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
       if (Test-Path $dest) { Remove-Item -Recurse -Force $dest }
       Copy-Item -Recurse -Path $dir.FullName -Destination $dest
+      # Each installed skill carries its plugin license.
+      $license = Join-Path $pluginDir.FullName 'LICENSE'
+      if (Test-Path $license) { Copy-Item $license (Join-Path $dest 'LICENSE.txt') }
       Write-Host "OK  $($dir.Name) -> $dest"
     }
     $installed++
 
     # Skills shipped in a plugin may need the plugin's MCP servers.
-    $mcpFile = Join-Path $dir.Parent.Parent.FullName '.mcp.json'
+    $mcpFile = Join-Path $pluginDir.FullName '.mcp.json'
     if (Test-Path $mcpFile) {
       Write-Host "    $($dir.Name) needs these MCP servers (add them to your agent, then authenticate):"
       Get-Content $mcpFile | ForEach-Object { Write-Host "      $_" }
     }
   }
 
-  if ($installed -eq 0) { throw "None of the requested skills exist: $($Skill -join ', '). Run with -List." }
+  if ($installed -eq 0) { throw "No skill matches $(@($Skill + $Plugin) -join ', '). Run with -List." }
   Write-Host "Installed $installed skill(s). Restart your agent to load them."
 } finally {
   if ($tmp) { Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue }

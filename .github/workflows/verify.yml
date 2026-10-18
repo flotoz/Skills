@@ -49,7 +49,7 @@ jobs:
             fixture="$(ls "$(dirname "$f")"/fixtures/*.json | head -1)"
             echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | node "$f" "$fixture" | grep -q '"tools"'
           done
-          for s in plugins/*/evals/*.sh install.sh; do bash -n "$s"; done
+          for s in plugins/*/evals/*.sh plugins/*/install.sh install.sh; do bash -n "$s"; done
 
       - name: The installer puts every skill in place
         run: |
@@ -57,4 +57,15 @@ jobs:
           HOME="$RUNNER_TEMP/home" bash install.sh --agent all
           for skill in plugins/*/skills/*/; do
             test -f "$RUNNER_TEMP/home/.claude/skills/$(basename "$skill")/SKILL.md"
+            test -f "$RUNNER_TEMP/home/.claude/skills/$(basename "$skill")/LICENSE.txt"
+          done
+
+      - name: Each plugin installer installs only its own skills
+        run: |
+          for plugin in plugins/*/; do
+            home="$RUNNER_TEMP/home-$(basename "$plugin")"
+            HOME="$home" bash "$plugin/install.sh"
+            expected="$(ls "$plugin/skills" | sort)"
+            actual="$(ls "$home/.claude/skills" | sort)"
+            test "$expected" = "$actual"
           done
