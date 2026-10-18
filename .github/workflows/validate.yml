@@ -1,0 +1,27 @@
+name: Validate skills
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate SKILL.md files
+        run: node scripts/validate_skill.js plugins/*/skills
+      - name: Validate JSON manifests
+        run: |
+          for f in .claude-plugin/marketplace.json plugins/*/.claude-plugin/plugin.json plugins/*/.mcp.json; do
+            node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" && echo "✅ $f"
+          done
+      - name: Install script smoke test
+        run: |
+          bash install.sh --list
+          HOME="$RUNNER_TEMP/home" bash install.sh --agent all
+          test -f "$RUNNER_TEMP/home/.claude/skills/analyze-finary-wealth/SKILL.md"

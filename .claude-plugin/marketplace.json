@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "flotoz-skills",
+  "description": "Curated agent skills by flotoz.",
+  "owner": {
+    "name": "Florian METOZ",
+    "url": "https://github.com/flotoz"
+  },
+  "plugins": [
+    {
+      "name": "finary-wealth",
+      "source": "./plugins/finary-wealth",
+      "description": "Analyze your Finary wealth with a passive, long-term wealth-pyramid method. Bundles the official Finary MCP connector.",
+      "category": "finance",
+      "tags": ["finary", "wealth", "personal-finance", "etf", "pea", "mcp"]
+    }
+  ]
+}
