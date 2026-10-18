@@ -2,7 +2,7 @@
   "name": "finary-coach",
   "displayName": "Finary Coach",
   "version": "1.0.0",
-  "description": "Analyze your Finary wealth with a passive, long-term wealth-pyramid method. Bundles the official read-only Finary MCP connector.",
+  "description": "Personal finance coach for your Finary data: safety cushion, budget, PEA vs CTO, US/Europe/China exposure, fees, crypto. Bundles the official read-only Finary MCP connector.",
   "author": {
     "name": "Florian METOZ",
     "url": "https://github.com/flotoz"
@@ -10,5 +10,5 @@
   "homepage": "https://github.com/flotoz/Skills",
   "repository": "https://github.com/flotoz/Skills",
   "license": "MIT",
-  "keywords": ["finary", "wealth", "personal-finance", "etf", "pea", "mcp"]
+  "keywords": ["finary", "coach", "budget", "wealth", "personal-finance", "etf", "pea", "mcp"]
 }

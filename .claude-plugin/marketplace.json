@@ -10,9 +10,9 @@
     {
       "name": "finary-coach",
       "source": "./plugins/finary-coach",
-      "description": "Analyze your Finary wealth with a passive, long-term wealth-pyramid method. Bundles the official Finary MCP connector.",
+      "description": "Personal finance coach for your Finary data: safety cushion, budget, PEA vs CTO, US/Europe/China exposure, fees, crypto. Bundles the official Finary MCP connector.",
       "category": "finance",
-      "tags": ["finary", "wealth", "personal-finance", "etf", "pea", "mcp"]
+      "tags": ["finary", "coach", "budget", "wealth", "personal-finance", "etf", "pea", "mcp"]
     }
   ]
 }
