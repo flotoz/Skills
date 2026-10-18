@@ -1,0 +1,20 @@
+{
+  // Rules: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+  "config": {
+    "default": true,
+    "MD013": false, // line length: prose is wrapped by hand, tables can be long
+    "MD024": { "siblings_only": true }, // repeated "Expected Output" headings in test cases
+    "MD033": false, // inline HTML in README
+    "MD041": false, // SKILL.md starts with frontmatter
+    "MD060": false, // table column style
+  },
+  "globs": ["**/*.md"],
+  "ignores": [
+    "node_modules/**",
+    "dist/**",
+    "**/CHANGELOG.md",
+    "**/evals/out/**",
+    "**/evals/results/**",
+    "LICENSE",
+  ],
+}

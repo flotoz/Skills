@@ -35,12 +35,20 @@ function simulate({ initial = 0, monthly = 0, rate = 0.06, years = 20 }) {
     value = value * (1 + monthlyRate) + monthly;
   }
   const invested = initial + monthly * years * 12;
-  return { initial, monthly, rate, years, invested, projected_value: Math.round(value) };
+  return {
+    initial,
+    monthly,
+    rate,
+    years,
+    invested,
+    projected_value: Math.round(value),
+  };
 }
 
 function callTool(name, args) {
   if (name === "simulate_compound_interest") return simulate(args ?? {});
-  if (!(name in fixture)) return { error: `No data for ${name} in this account.` };
+  if (!(name in fixture))
+    return { error: `No data for ${name} in this account.` };
   return fixture[name];
 }
 
@@ -82,12 +90,23 @@ createInterface({ input: process.stdin }).on("line", (line) => {
     case "tools/call":
       return reply(id, {
         content: [
-          { type: "text", text: JSON.stringify(callTool(params.name, params.arguments), null, 2) },
+          {
+            type: "text",
+            text: JSON.stringify(
+              callTool(params.name, params.arguments),
+              null,
+              2,
+            ),
+          },
         ],
       });
     default:
       process.stdout.write(
-        JSON.stringify({ jsonrpc: "2.0", id, error: { code: -32601, message: `Unknown method ${method}` } }) + "\n",
+        JSON.stringify({
+          jsonrpc: "2.0",
+          id,
+          error: { code: -32601, message: `Unknown method ${method}` },
+        }) + "\n",
       );
   }
 });

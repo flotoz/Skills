@@ -5,7 +5,7 @@ account and clicks **Authorize read-only access**. No API key, no bank
 credentials. Show the user only the section for their client.
 
 Labels in **bold** come from Finary's English help. Do not translate them as
-if quoting the app: write "the option *Allow AI assistants (MCP)* (its
+if quoting the app: write "the option _Allow AI assistants (MCP)_ (its
 wording may differ in your app's language)".
 
 - Server URL: `https://public-api.finary.com/mcp`
@@ -60,12 +60,12 @@ finary https://public-api.finary.com/mcp` then `/mcp auth finary`).
 
 ## Troubleshooting
 
-| Symptom | Fix |
-| --- | --- |
-| Connected but no tools | Restart the client |
-| Authorization error | Check the Security toggle, then re-run authorization (not just reconnect) |
-| Connection fails | Disable VPN; make sure the URL starts with `https://` |
-| Error code `ofid_…` | Send it to Finary support |
+| Symptom                | Fix                                                                       |
+| ---------------------- | ------------------------------------------------------------------------- |
+| Connected but no tools | Restart the client                                                        |
+| Authorization error    | Check the Security toggle, then re-run authorization (not just reconnect) |
+| Connection fails       | Disable VPN; make sure the URL starts with `https://`                     |
+| Error code `ofid_…`    | Send it to Finary support                                                 |
 
 ## Revoke access
 

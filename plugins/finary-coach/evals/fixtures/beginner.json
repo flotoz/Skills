@@ -1,23 +1,72 @@
 {
-  "get_me": { "first_name": "Alex", "email": "alex@example.com", "country": "FR", "currency": "EUR" },
+  "get_me": {
+    "first_name": "Alex",
+    "email": "alex@example.com",
+    "country": "FR",
+    "currency": "EUR"
+  },
   "profiles": [{ "name": "Alex", "role": "owner" }],
   "get_portfolio_overview": {
     "currency": "EUR",
     "net_worth": 32000,
     "gross_assets": 32000,
     "debts": 0,
-    "breakdown": { "checking_accounts": 9000, "savings_accounts": 0, "investments": 15000, "crypto": 8000, "real_estate": 0 }
+    "breakdown": {
+      "checking_accounts": 9000,
+      "savings_accounts": 0,
+      "investments": 15000,
+      "crypto": 8000,
+      "real_estate": 0
+    }
   },
   "accounts": [
-    { "name": "Compte courant", "type": "checking", "institution": "Banque X", "balance": 9000, "iban": "FR76 3000 4000 0500 0012 3456 789" },
-    { "name": "Livret A", "type": "livret_a", "institution": "Banque X", "balance": 0 },
-    { "name": "Compte-titres", "type": "cto", "institution": "Banque X", "balance": 15000 },
-    { "name": "Binance", "type": "crypto", "institution": "Binance", "balance": 8000 }
+    {
+      "name": "Compte courant",
+      "type": "checking",
+      "institution": "Banque X",
+      "balance": 9000,
+      "iban": "FR76 3000 4000 0500 0012 3456 789"
+    },
+    {
+      "name": "Livret A",
+      "type": "livret_a",
+      "institution": "Banque X",
+      "balance": 0
+    },
+    {
+      "name": "Compte-titres",
+      "type": "cto",
+      "institution": "Banque X",
+      "balance": 15000
+    },
+    {
+      "name": "Binance",
+      "type": "crypto",
+      "institution": "Binance",
+      "balance": 8000
+    }
   ],
   "holdings": [
-    { "account": "Compte-titres", "name": "Banque X Actions Monde (fonds maison)", "isin": "FR0000000001", "value": 15000, "ter": 1.8, "asset_class": "equity_fund" },
-    { "account": "Binance", "name": "Bitcoin", "value": 5000, "asset_class": "crypto" },
-    { "account": "Binance", "name": "Solana", "value": 3000, "asset_class": "crypto" }
+    {
+      "account": "Compte-titres",
+      "name": "Banque X Actions Monde (fonds maison)",
+      "isin": "FR0000000001",
+      "value": 15000,
+      "ter": 1.8,
+      "asset_class": "equity_fund"
+    },
+    {
+      "account": "Binance",
+      "name": "Bitcoin",
+      "value": 5000,
+      "asset_class": "crypto"
+    },
+    {
+      "account": "Binance",
+      "name": "Solana",
+      "value": 3000,
+      "asset_class": "crypto"
+    }
   ],
   "get_budget_overview": {
     "currency": "EUR",
@@ -29,7 +78,14 @@
   },
   "search_spending": {
     "currency": "EUR",
-    "monthly_average_by_category": { "rent": 750, "groceries": 300, "transport": 120, "subscriptions": 80, "restaurants": 200, "leisure": 150 }
+    "monthly_average_by_category": {
+      "rent": 750,
+      "groceries": 300,
+      "transport": 120,
+      "subscriptions": 80,
+      "restaurants": 200,
+      "leisure": 150
+    }
   },
   "goals": []
 }
