@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Runs coach-my-finances against the mock Finary MCP with a fresh headless Claude Code.
 # Requires a logged-in `claude` CLI. Outputs land in evals/out/<case>.md for review
-# against ../skills/coach-my-finances/test_cases.md.
+# against test_cases.md in this folder.
 #
 #   bash plugins/finary-coach/evals/run-evals.sh            # all cases
 #   bash plugins/finary-coach/evals/run-evals.sh us-china   # one case
