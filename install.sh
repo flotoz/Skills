@@ -3,6 +3,7 @@
 #
 #   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/install.sh | bash
 #   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/install.sh | bash -s -- --skill coach-my-finances --agent all
+#   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/install.sh | bash -s -- --plugin finary-coach
 #   ./install.sh --list
 set -euo pipefail
 
@@ -10,6 +11,7 @@ REPO="flotoz/Skills"
 REF="main"
 AGENTS="claude"
 SKILLS=()
+PLUGINS=()
 SCOPE="global"
 LIST_ONLY=0
 
@@ -17,6 +19,7 @@ usage() {
   cat <<'EOF'
 Usage: install.sh [options]
   -s, --skill NAME    Skill to install (repeatable). Default: all skills.
+  -P, --plugin NAME   Install every skill of a plugin (repeatable).
   -a, --agent NAME    claude | codex | cursor | all (comma-separated). Default: claude.
   -p, --project       Install into the current project instead of the home directory.
   -r, --ref REF       Git branch or tag to install from. Default: main.
@@ -28,6 +31,7 @@ EOF
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -s|--skill) SKILLS+=("$2"); shift 2 ;;
+    -P|--plugin) PLUGINS+=("$2"); shift 2 ;;
     -a|--agent) AGENTS="$2"; shift 2 ;;
     -p|--project) SCOPE="project"; shift ;;
     -r|--ref) REF="$2"; shift 2 ;;
@@ -63,8 +67,8 @@ if [[ ${#SKILL_DIRS[@]} -eq 0 ]]; then
 fi
 
 if [[ $LIST_ONLY -eq 1 ]]; then
-  echo "Available skills:"
-  for dir in "${SKILL_DIRS[@]}"; do echo "  - $(basename "$dir")"; done
+  echo "Available skills (plugin/skill):"
+  for dir in "${SKILL_DIRS[@]}"; do echo "  - $(basename "$(dirname "$(dirname "$dir")")")/$(basename "$dir")"; done
   exit 0
 fi
 
@@ -96,18 +100,23 @@ done
 installed=0
 for dir in "${SKILL_DIRS[@]}"; do
   name="$(basename "$dir")"
+  plugin_dir="$(dirname "$(dirname "$dir")")"
+  plugin="$(basename "$plugin_dir")"
   if [[ ${#SKILLS[@]} -gt 0 && ! " ${SKILLS[*]} " =~ " $name " ]]; then continue; fi
+  if [[ ${#PLUGINS[@]} -gt 0 && ! " ${PLUGINS[*]} " =~ " $plugin " ]]; then continue; fi
   for agent in "${AGENT_LIST[@]}"; do
     dest="$(target_dir "$agent")/$name"
     mkdir -p "$(dirname "$dest")"
     rm -rf "$dest"
     cp -R "$dir" "$dest"
+    # Each installed skill carries its plugin license.
+    [[ -f "$plugin_dir/LICENSE" ]] && cp "$plugin_dir/LICENSE" "$dest/LICENSE.txt"
     echo "✅ $name → $dest"
   done
   installed=$((installed + 1))
 
   # Skills shipped in a plugin may need the plugin's MCP servers.
-  mcp_file="$(dirname "$(dirname "$dir")")/.mcp.json"
+  mcp_file="$plugin_dir/.mcp.json"
   if [[ -f "$mcp_file" ]]; then
     echo "   ℹ️  $name needs these MCP servers (add them to your agent, then authenticate):"
     sed 's/^/      /' "$mcp_file"
@@ -115,7 +124,7 @@ for dir in "${SKILL_DIRS[@]}"; do
 done
 
 if [[ $installed -eq 0 ]]; then
-  echo "❌ None of the requested skills exist: ${SKILLS[*]}. Run with --list." >&2
+  echo "❌ No skill matches ${SKILLS[*]} ${PLUGINS[*]}. Run with --list." >&2
   exit 1
 fi
 echo "🎉 Installed $installed skill(s). Restart your agent to load them."
