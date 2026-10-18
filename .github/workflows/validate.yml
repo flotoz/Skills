@@ -1,0 +1,38 @@
+name: Validate skills
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate SKILL.md files
+        run: node scripts/validate_skill.js plugins/*/skills
+      - name: Validate marketplace, plugins and skill frontmatter (Claude Code)
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          claude plugin validate .
+          for p in plugins/*/; do claude plugin validate "$p"; done
+      - name: Validate JSON manifests
+        run: |
+          for f in .claude-plugin/marketplace.json plugins/*/.claude-plugin/plugin.json plugins/*/.mcp.json; do
+            node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" && echo "✅ $f"
+          done
+      - name: Mock Finary MCP smoke test
+        run: |
+          echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' \
+            | node plugins/finary-coach/evals/mock-finary-mcp.mjs plugins/finary-coach/evals/fixtures/beginner.json \
+            | grep -q simulate_compound_interest
+          bash -n plugins/finary-coach/evals/run-evals.sh
+      - name: Install script smoke test
+        run: |
+          bash install.sh --list
+          HOME="$RUNNER_TEMP/home" bash install.sh --agent all
+          test -f "$RUNNER_TEMP/home/.claude/skills/coach-my-finances/SKILL.md"
