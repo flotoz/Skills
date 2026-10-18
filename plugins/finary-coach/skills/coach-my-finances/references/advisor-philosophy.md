@@ -9,7 +9,9 @@ avoided. Risk always matches the person's age and horizon.
 - The wealth pyramid
 - Thresholds (🟢 / 🟠 / 🔴)
 - Allocation by age and horizon
-- Envelope order (France)
+- Exposure benchmarks (region, sector, currency)
+- Envelope order and balance (France)
+- Outside France
 - Red flags
 
 ## The wealth pyramid
@@ -64,7 +66,44 @@ Rule of thumb when the horizon is unclear: equity ≈ 110 − age, then adjust t
 the stated tolerance to a 30 % drawdown. Horizon matters more than age: a
 project in 2 years stays out of equities at any age.
 
-## Envelope order (France)
+## Exposure benchmarks
+
+The neutral reference is the **world equity market** (an MSCI ACWI / FTSE
+All-World type index). Approximate weights, to re-check against the index
+factsheet when precision matters:
+
+| Region | ≈ World weight | 🟠 Watch | 🔴 Act |
+| --- | --- | --- | --- |
+| United States | ~60–65 % | > 75 % or < 45 % | > 85 % (e.g. S&P 500 / Nasdaq only) |
+| Europe (incl. UK, CH) | ~15 % | > 35 % (home bias) | > 50 % |
+| Japan | ~5 % | — | — |
+| Emerging markets | ~10 % | > 20 % | > 30 % |
+| China (incl. HK) | ~3 % | > 8 % | > 15 % |
+| Single country other than US | — | > 20 % | > 35 % |
+
+Look-through rules when Finary gives no breakdown (always label `≈ est.`):
+
+- MSCI World ≈ 70 % US, ~17 % Europe, ~6 % Japan, 0 % emerging.
+- MSCI ACWI / FTSE All-World ≈ 62 % US, ~15 % Europe, ~5 % Japan, ~10 % EM.
+- S&P 500 = 100 % US, ~30 % tech. Nasdaq-100 ≈ 97 % US, ~60 % tech, and its
+  top lines are also the S&P 500's top lines: holding both is not
+  diversification.
+- Stoxx 600 / Euro Stoxx = 100 % Europe.
+- MSCI EM ≈ 25–30 % China, ~20 % India, ~18 % Taiwan.
+- Sector weights: use the index's tech share above; MSCI World / ACWI ≈ 25 %
+  tech.
+
+Other concentrations:
+
+| Check | 🟢 | 🟠 | 🔴 |
+| --- | --- | --- | --- |
+| Largest sector (e.g. tech) | ≤ 30 % | 30–40 % | > 40 % |
+| Currency | unhedged foreign equities are normal | — | debts or short-term money in a foreign currency |
+| Employer stock | 0–5 % | 5–10 % | > 10 % (job and savings on the same bet) |
+
+A deliberate tilt is acceptable if the user can explain it; ask "why" first.
+
+## Envelope order and balance (France)
 
 1. **Regulated savings** — Livret A, LDDS, LEP (if eligible: best risk-free
    rate). Tax-free, liquid. Only for the safety base.
@@ -75,6 +114,20 @@ project in 2 years stays out of equities at any age.
 4. **PER** — only if the marginal tax rate is ≥ 30 % and money can be locked
    until retirement.
 5. **CTO** — last, for what the other envelopes cannot hold.
+
+| Check | 🟢 | 🟠 | 🔴 |
+| --- | --- | --- | --- |
+| PEA opened | yes, even small | — | no PEA while investing elsewhere |
+| CTO vs PEA | CTO only after the PEA ceiling or for non-eligible assets | CTO > PEA with PEA room left | PEA-eligible ETFs held in a CTO, PEA empty |
+| Life insurance | low fees, ETF units | euro fund only, fees ≤ 0.6 % | bank contract, fees > 0.8 % or entry fees |
+| PER | marginal tax rate ≥ 30 % | marginal tax rate 11 % | used as emergency money |
+
+## Outside France
+
+If the user is not a French tax resident, say so, skip the French envelope
+rules and apply the principle instead: local tax-advantaged accounts first,
+taxable account last. Do not invent local tax rules; ask which accounts the
+user can open.
 
 ## Red flags
 

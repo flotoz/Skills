@@ -2,7 +2,7 @@
 # Installs skills from github.com/flotoz/Skills into one or more agents.
 #
 #   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/install.sh | bash
-#   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/install.sh | bash -s -- --skill analyze-finary-wealth --agent all
+#   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/install.sh | bash -s -- --skill coach-my-finances --agent all
 #   ./install.sh --list
 set -euo pipefail
 

@@ -13,7 +13,7 @@ In Finary: account menu → **Security** → enable **Allow AI assistants (MCP)*
 
 ## Claude Code
 
-If the `finary-wealth` plugin is installed, the server is already declared:
+If the `finary-coach` plugin is installed, the server is already declared:
 run `/mcp`, select **finary**, authenticate in the browser.
 
 Otherwise:

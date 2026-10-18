@@ -24,7 +24,7 @@ plugins/<plugin>/
 1. **Always in English.** The skill tells the agent to answer in the user's
    language.
 2. **Name**: imperative verb + object, lowercase-hyphen, ≤ 64 chars
-   (`analyze-finary-wealth`). No `claude` / `anthropic`.
+   (`coach-my-finances`). No `claude` / `anthropic`.
 3. **Frontmatter**: `name`, `description`, `effort`,
    `disable-model-invocation`, `user-invocable` — nothing else.
 4. **Description** (~250 chars, third person): what it does, then

@@ -8,8 +8,8 @@
   },
   "plugins": [
     {
-      "name": "finary-wealth",
-      "source": "./plugins/finary-wealth",
+      "name": "finary-coach",
+      "source": "./plugins/finary-coach",
       "description": "Analyze your Finary wealth with a passive, long-term wealth-pyramid method. Bundles the official Finary MCP connector.",
       "category": "finance",
       "tags": ["finary", "wealth", "personal-finance", "etf", "pea", "mcp"]

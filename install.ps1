@@ -6,7 +6,7 @@
   irm https://raw.githubusercontent.com/flotoz/Skills/main/install.ps1 | iex
 
 .EXAMPLE
-  & ([scriptblock]::Create((irm https://raw.githubusercontent.com/flotoz/Skills/main/install.ps1))) -Skill analyze-finary-wealth -Agent all
+  & ([scriptblock]::Create((irm https://raw.githubusercontent.com/flotoz/Skills/main/install.ps1))) -Skill coach-my-finances -Agent all
 
 .EXAMPLE
   .\install.ps1 -List
