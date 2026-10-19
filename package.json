@@ -12,7 +12,8 @@
     "verify:rules": "node scripts/check-repo.mjs",
     "verify:docs": "markdownlint-cli2 && prettier --check .",
     "fix:docs": "prettier --write . && markdownlint-cli2 --fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "build:skills": "node scripts/build-skills.mjs"
   },
   "lint-staged": {
     "*.md": [
