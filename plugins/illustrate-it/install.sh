@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-# Installs the illustrate-it skills into Claude Code, Codex or Cursor.
+# Installs the illustrate-it skills into ~/.agents/skills, plus ~/.claude/skills
+# when Claude Code is detected.
 #
 #   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/illustrate-it/install.sh | bash
-#   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/illustrate-it/install.sh | bash -s -- --agent all --project
+#   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/illustrate-it/install.sh | bash -s -- --project
 #
-# Options are forwarded to the repository installer (--agent, --project, --ref, --list).
+# Advanced options are forwarded to the repository installer (--agent,
+# --project, --ref, --list; see --help).
 set -euo pipefail
 
 PLUGIN="illustrate-it"

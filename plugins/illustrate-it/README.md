@@ -28,17 +28,21 @@ claude plugin marketplace add flotoz/Skills
 claude plugin install illustrate-it@flotoz-skills
 ```
 
-Any agent (Claude Code, Codex, Cursor), macOS / Linux / Git Bash:
+Any agent, macOS / Linux / Git Bash (installs into `~/.agents/skills`, plus
+`~/.claude/skills` when Claude Code is detected):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/illustrate-it/install.sh | bash -s -- --agent all
+curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/illustrate-it/install.sh | bash
 ```
 
 Windows PowerShell:
 
 ```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/flotoz/Skills/main/plugins/illustrate-it/install.ps1))) -Agent all
+irm https://raw.githubusercontent.com/flotoz/Skills/main/plugins/illustrate-it/install.ps1 | iex
 ```
+
+Advanced options (`--agent`, `--project`, `--ref`): see the
+[repository README](https://github.com/flotoz/Skills#advanced-options).
 
 With `npx skills`:
 
