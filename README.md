@@ -155,9 +155,9 @@ Build the bundles locally with `npm run build:skills`.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md): `npm run setup` installs the tooling
-and the Git hooks (formatting, repository rules, Conventional Commits). Add
-skills with `/create-skill`, or by hand following
+See [CONTRIBUTING.md](CONTRIBUTING.md): `npm run onboard` checks Node.js, installs
+the tooling, the Git hooks (formatting, repository rules, Conventional Commits)
+and the Claude Code CLI. Add skills with `/create-skill`, or by hand following
 [docs/skill-authoring-guide.md](docs/skill-authoring-guide.md).
 
 ## License

@@ -1,17 +1,28 @@
 # Contributing
 
-## Setup
+## Onboarding
+
+Prerequisites: Git and Node.js 26 (version in [.nvmrc](.nvmrc), e.g. `nvm use`).
 
 ```bash
-npm run setup
+git clone https://github.com/flotoz/Skills.git && cd Skills
+npm run onboard
 ```
 
-`npm run setup` installs the tooling and the Git hooks ([husky](https://typicode.github.io/husky/)):
+`npm run onboard` is safe to re-run. It:
 
-| Hook         | Runs                                                                                 | Blocks the commit when                                   |
-| ------------ | ------------------------------------------------------------------------------------ | -------------------------------------------------------- |
-| `pre-commit` | `lint-staged` (Prettier + markdownlint on staged files), then `npm run verify:rules` | a file is badly formatted or a repository rule is broken |
-| `commit-msg` | `commitlint`                                                                         | the message is not a Conventional Commit                 |
+1. checks Node.js against `.nvmrc`;
+2. installs the quality tooling at the exact versions of `package-lock.json`;
+3. installs the Git hooks with [lefthook](https://lefthook.dev) and proves the `commit-msg` hook rejects a bad message;
+4. installs the Claude Code CLI at the version CI pins (`config.claudeCodeVersion` in `package.json`) if it is missing; an existing install is kept;
+5. runs `npm run verify` and `claude plugin validate .`.
+
+Hooks, defined in [lefthook.yml](lefthook.yml):
+
+| Hook         | Runs                                                                                  | Blocks the commit when                                   |
+| ------------ | ------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `pre-commit` | Prettier + markdownlint on staged files (fixes restaged), then `npm run verify:rules` | a file is badly formatted or a repository rule is broken |
+| `commit-msg` | `commitlint`                                                                          | the message is not a Conventional Commit                 |
 
 Never bypass them with `--no-verify`: CI runs the same checks.
 

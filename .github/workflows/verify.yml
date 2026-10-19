@@ -39,7 +39,7 @@ jobs:
 
       - name: Claude Code accepts the marketplace, plugins and skills
         run: |
-          npm install -g @anthropic-ai/claude-code@2.1.303
+          npm install -g "@anthropic-ai/claude-code@$(node -p "require('./package.json').config.claudeCodeVersion")"
           claude plugin validate .
           for p in plugins/*/; do claude plugin validate "$p"; done
 
