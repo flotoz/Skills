@@ -49,7 +49,8 @@ claude plugin install <plugin>@flotoz-skills
 
 ### Option 2 — Any agent with `npx skills`
 
-Claude Code, Codex, Cursor and 40+ agents ([vercel-labs/skills](https://github.com/vercel-labs/skills)):
+Claude Code, Codex, Cursor and the other agents
+[vercel-labs/skills](https://github.com/vercel-labs/skills) supports:
 
 ```bash
 npx skills add flotoz/Skills --skill <skill> -g
