@@ -15,8 +15,8 @@ non-développeur." (the user then confirms the restated intent)
 - Writes `test_cases.md` (≥ 3 cases) before `SKILL.md`.
 - `SKILL.md`: English, ≤ 200 lines, exactly the 5 frontmatter keys, folded
   `description: >-` with a "Use when" clause, name like `summarize-pr`.
-- Registers it: marketplace entry (if new plugin), README catalog row,
-  release-please config and manifest; `npm run verify` passes.
+- Registers it: marketplace entry (if new plugin), README catalog row;
+  creates no release config; `npm run verify` passes.
 
 ## Case 2: Turn the conversation into a skill
 

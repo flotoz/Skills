@@ -33,11 +33,9 @@ release pipeline all know it.
    - `LICENSE`: MIT, current year and author;
    - `install.sh` / `install.ps1`: wrappers that call the root installer
      with `--plugin <plugin>`, locally or from GitHub. `chmod +x install.sh`.
-5. Release config:
-   - `release-please-config.json` → `packages["plugins/<plugin>"]` with
-     `"component": "<plugin>"` and the `extra-files` entry that bumps
-     `.claude-plugin/plugin.json` `$.version` (copy an existing package);
-   - `.release-please-manifest.json` → `"plugins/<plugin>": "0.1.0"`.
+
+No release config: the version in `plugin.json` is the only source, and the
+first merge publishes it.
 
 ## New skill in an existing plugin
 
@@ -74,9 +72,11 @@ HOME="$(mktemp -d)" bash plugins/<plugin>/install.sh --agent all
   `docs(<skill>): …`, `test(<skill>): …`. The `commit-msg` hook rejects other
   formats.
 - PR title is a Conventional Commit too (squash merge uses it).
-- On merge to `main`, release-please opens or updates a **release PR** per
-  plugin: `feat` → minor, `fix` → patch, `!` → major, CHANGELOG generated.
-- Merging the release PR tags `<plugin>-v<version>`, creates the GitHub
-  Release and the release workflow attaches `dist/<plugin>/*.zip`.
+- On merge to `main`, every plugin with a change under
+  `plugins/<plugin>/skills/` is released automatically, with no release PR:
+  `!` → major, `feat` → minor, anything else → patch. The workflow commits the
+  new `plugin.json` version and `CHANGELOG.md`, tags `<plugin>-v<version>`,
+  creates the GitHub Release and attaches `dist/<plugin>/*.zip`. Never edit
+  the version or the changelog by hand.
 - Users update: `claude plugin marketplace update flotoz-skills`,
   `npx skills update`, or re-run the install script.

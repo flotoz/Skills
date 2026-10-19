@@ -125,8 +125,8 @@ print.
 
 - New plugin: `plugins/<plugin>/.claude-plugin/plugin.json` (name = entry
   name), an entry in `.claude-plugin/marketplace.json`, its own `README.md`,
-  `LICENSE` (MIT), `install.sh` and `install.ps1`, and an entry in
-  `release-please-config.json` and `.release-please-manifest.json`.
+  `LICENSE` (MIT), `install.sh` and `install.ps1`. No release config: the
+  merge to `main` releases it at its `plugin.json` version.
 - A row in the README catalog, and a usage example under `## Use`.
 - Details: the `create-skill` skill's `registration-and-release.md` in
   `plugins/skill-factory/`.

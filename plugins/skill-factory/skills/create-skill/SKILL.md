@@ -143,8 +143,7 @@ Follow [references/registration-and-release.md](references/registration-and-rele
 
 - new plugin → entry in `.claude-plugin/marketplace.json`, `plugin.json`,
   its own `README.md`, `LICENSE` (MIT) and `install.sh`/`install.ps1`
-  from [assets/plugin/](assets/plugin/README.md), release-please config and
-  manifest;
+  from [assets/plugin/](assets/plugin/README.md);
 - skill → row in the root README catalog (Plugin column links the plugin
   README) and in the plugin README;
 - `npm run build:skills` must produce `dist/<plugin>/<skill>.zip`.
@@ -161,8 +160,8 @@ Both pass, then:
 - branch `feat/<skill>` (or `fix/<skill>`), commit with
   `feat(<skill>): …` — the hooks run formatting and the rules;
 - push and open the PR with the eval results in the description;
-- after merge, release-please opens a release PR that bumps the plugin version
-  and changelog; merging it publishes the GitHub Release with the zip.
+- the merge publishes the GitHub Release with the zip automatically: version
+  bump and changelog come from the commit types, never by hand.
 
 ## Updating an existing skill
 

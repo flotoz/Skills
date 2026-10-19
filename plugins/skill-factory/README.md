@@ -61,8 +61,8 @@ Skills settings.
   skill.
 - Drafts SKILL.md (≤ 200 lines) plus `references/`, then evaluates it with
   fresh subagents against a no-skill baseline.
-- Registers the plugin (marketplace, README, LICENSE, installers, release
-  config) and runs the repository checks.
+- Registers the plugin (marketplace, README, LICENSE, installers) and runs
+  the repository checks.
 
 ## License
 

@@ -109,17 +109,17 @@ Run it inside a clone of this repository:
 
 It interviews you, researches with subagents, writes test cases first, drafts
 the skill, evaluates it with fresh subagents, registers it (marketplace,
-catalog, release config) and opens the PR.
+catalog) and opens the PR.
 
 ## Releases
 
 Versioning is automatic from [Conventional Commits](https://www.conventionalcommits.org):
 
 ```text
-merge to main ─▶ release-please opens a release PR per changed plugin
-                 (feat → minor, fix → patch, ! → major, CHANGELOG.md)
-merge release PR ─▶ tag <plugin>-v<version> + GitHub Release
-                    + dist/<plugin>/<skill>.zip attached (claude.ai bundle)
+merge to main ─▶ every plugin whose skills/ changed is released at once
+                 (! → major, feat → minor, else patch, CHANGELOG.md)
+               ─▶ tag <plugin>-v<version> + GitHub Release
+                  + dist/<plugin>/<skill>.zip attached (claude.ai bundle)
 ```
 
 Build the bundles locally with `npm run build:skills`.
@@ -149,9 +149,8 @@ Build the bundles locally with `npm run build:skills`.
 ├── scripts/
 │   ├── check-repo.mjs                  # repository rules (npm run verify:rules)
 │   ├── link-agents.mjs                 # links .claude → .agents (npm run setup)
-│   └── build-skills.mjs                # compiles dist/<plugin>/<skill>.zip
-├── release-please-config.json          # one release package per plugin
-├── .release-please-manifest.json       # current version per plugin
+│   ├── build-skills.mjs                # compiles dist/<plugin>/<skill>.zip
+│   └── release-plugins.mjs             # versions and publishes changed plugins
 ├── docs/skill-authoring-guide.md
 ├── install.sh / install.ps1            # installers without Node.js
 └── .github/workflows/                  # verify.yml (PRs), release.yml (main)
