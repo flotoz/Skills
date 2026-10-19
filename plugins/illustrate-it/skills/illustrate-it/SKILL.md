@@ -6,7 +6,8 @@ description: >-
   lifecycle or chart, in Mermaid or SVG readable on light and dark themes.
   Use when the user asks to show, draw, map, diagram, chart or visualize how
   something works or what it is made of (schéma, diagramme, dessine-moi,
-  graphique), even if they do not say "diagram".
+  graphique), even if they do not say "diagram". Not for logos, icons or
+  artwork.
 effort: low
 disable-model-invocation: false
 user-invocable: true
@@ -27,8 +28,10 @@ Answer in the user's language; keep code identifiers as they are.
 - **No invented value.** A chart value without a named source (file, query,
   run, the user's message) is not drawn; a node without a source is removed
   or marked `?` under _Unverified_.
-- **No decorative art.** Logos, mascots, banners and "nice pictures" are not
-  this job: say so and offer a diagram of what the subject does instead.
+- **Step aside for artwork.** Logos, icons, mascots, banners and other
+  decorative pictures are outside this skill. Do not refuse on its behalf:
+  say in one line that it does not apply, drop its rules (sources, palette,
+  lint) and help as you would without it.
 - **Install nothing** without asking. The linters need Node.js only; if it is
   missing, check by hand and say the lint was not run.
 
