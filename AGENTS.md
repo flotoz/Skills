@@ -54,16 +54,19 @@ evals live next to them in `plugins/<plugin>/evals/`.
 
 ## Writing a skill
 
-Use the [create-or-update-skill](.agents/skills/create-or-update-skill/SKILL.md)
-skill for every skill you create, rename, change or review, or delegate to the
-[subagent of the same name](.agents/agents/create-or-update-skill.md) to keep
-the work out of the main context. The short version: English only, an
+Two skills, one owner each. [create-skill](plugins/skill-factory/skills/create-skill/SKILL.md)
+owns how a skill is written, evaluated, registered and released; it is the
+single source of truth, so link it instead of restating it.
+[create-or-update-skill](.agents/skills/create-or-update-skill/SKILL.md) adds
+only this repository's layer: whether the work belongs in a plugin or in
+`.agents/`, how internal skills and subagents differ, and never `.claude/`.
+Delegate to the [subagent of the same name](.agents/agents/create-or-update-skill.md)
+to keep the work out of the main context. The short version: English only, an
 imperative verb-plus-object name, a description that is the trigger and says
 "Use when" with the words users really type, a `SKILL.md` under 200 lines with
 the details pushed to `references/`, an invocation mode chosen on purpose and
 written out, test cases written before the skill, and no volatile fact without
-a dated official source. The reasoning behind each rule is in the
-[skill authoring guide](docs/skill-authoring-guide.md).
+a dated official source.
 
 ## Prove it
 

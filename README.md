@@ -130,7 +130,7 @@ Build the bundles locally with `npm run build:skills`.
 .
 ├── AGENTS.md                         # rules for agents working here
 ├── .agents/                          # agent config, single source of truth (.claude links here)
-│   ├── skills/create-or-update-skill/  # repo skill rules + validate_skill.js
+│   ├── skills/create-or-update-skill/  # .agents/ layer over create-skill + validate_skill.js
 │   └── agents/create-or-update-skill.md
 ├── .claude-plugin/marketplace.json   # plugin catalog (marketplace "flotoz-skills")
 ├── plugins/

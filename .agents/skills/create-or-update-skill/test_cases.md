@@ -1,66 +1,54 @@
 # Test Cases for create-or-update-skill
 
-## Case 1: Create a distributed skill
+## Case 1: Shipped skill is delegated
 
 **Input**: "Add a skill to the finary-coach plugin that reviews my ETF fees."
 
 **Expected Output**:
 
-- Checks existing skills first and notes the overlap with `coach-my-finances`
-  (fees are already covered), proposing to extend it before creating anything.
-- If the user still wants a new skill: test cases are written before
-  `SKILL.md`, the name is verb + object (e.g. `review-etf-fees`), mode is Auto,
-  the README catalog gets a row.
+- Classifies it as a shipped skill (`plugins/finary-coach/skills/`) and
+  follows `create-skill` instead of writing its own workflow.
+- Notes the overlap with `coach-my-finances` (fees are already covered) before
+  creating anything.
+
+## Case 2: Repo-internal skill
+
+**Input**: "Create a skill that tells agents how to write a release-please
+commit in this repository."
+
+**Expected Output**:
+
+- Creates `.agents/skills/<verb-object>/SKILL.md` with the five frontmatter
+  keys, and `test_cases.md` (≥ 3 cases) in the same folder, written first.
+- Links to the repository's existing release docs instead of copying them.
+- Adds no marketplace entry, README catalog row or release-please entry.
 - `npm run verify` passes and the report lists the commands run.
 
-## Case 2: Side effect requires manual mode
+## Case 3: Writing through `.claude/` is refused
 
-**Input**: "Create a skill that posts my weekly portfolio summary on LinkedIn."
-
-**Expected Output**:
-
-- Frontmatter sets `disable-model-invocation: true` and `user-invocable: true`.
-- The description starts with `Manual only`.
-- `agents/openai.yaml` sets `allow_implicit_invocation: false`.
-- The validator rejects the skill if either is removed.
-
-## Case 3: Agent-only background rules
-
-**Input**: "Create a skill with the criteria to rate a savings account."
+**Input**: "Save this new skill in `.claude/skills/review-pr/`."
 
 **Expected Output**:
 
-- Frontmatter sets `disable-model-invocation: false` and
-  `user-invocable: false`.
-- A variant with `disable-model-invocation: true` and `user-invocable: false`
-  fails the validator as unreachable.
+- Explains that `.claude` is a git-ignored link to `.agents/` and writes the
+  skill to `.agents/skills/review-pr/` instead.
 
-## Case 4: Volatile facts are challenged
+## Case 4: Subagent
 
-**Input**: "Write a skill that tells users the Livret A rate is 3% and the PEA
-ceiling is 150 000 €."
+**Input**: "Create a subagent that audits every skill description for weak
+triggers."
 
 **Expected Output**:
 
-- Challenges hard-coding: rates and ceilings change.
-- The skill instead verifies them on an official source and cites it with the
-  date, or gives no number.
+- Creates `.agents/agents/<verb-object>.md` with `name`, `description`,
+  least-privilege `tools` (read-only here), `model`.
+- The body says when to stop and return a question, that it never commits,
+  and the shape of its final report.
 
-## Case 5: Oversized skill
+## Case 5: Broken frontmatter
 
-**Input**: Update a skill whose `SKILL.md` would grow past 200 lines with a
-long report template.
-
-**Expected Output**:
-
-- The template moves to `references/<topic>.md`, linked from `SKILL.md`.
-- `SKILL.md` stays ≤ 200 lines; a reference over 100 lines starts with a table
-  of contents.
-
-## Case 6: Broken frontmatter
-
-**Input**: A `SKILL.md` whose plain-YAML description contains `Note: read
-first`, and no `user-invocable` key.
+**Input**: An internal `SKILL.md` whose plain-YAML description contains
+`Note: read first`, and no `user-invocable` key.
 
 **Expected Output**:
 

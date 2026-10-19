@@ -1,161 +1,114 @@
 ---
 name: create-or-update-skill
 description: >-
-  Creates or updates an agent skill in this repository to Anthropic quality
-  standards: challenges the request, writes test cases first, keeps SKILL.md
-  short, registers and verifies it. Use whenever a skill is created, renamed,
-  changed or reviewed.
-effort: medium
+  Applies this repository's rules for agent configuration in .agents/: where a
+  skill or subagent belongs, how repo-internal skills and subagents are
+  written and checked, never .claude/. Delegates shipped plugin skills to
+  create-skill. Use when creating, changing or reviewing a skill or subagent.
+effort: low
 disable-model-invocation: false
 user-invocable: true
 ---
 
-# Create or Update a Skill
+# Create or Update a Skill (repository layer)
 
-A skill is a prompt that runs on machines you will never see, triggered by a
-description the agent reads among dozens of others. It earns its place only if
-an agent with it beats an agent without it on a job users actually ask for.
-Everything below serves that test.
+This skill adds only what is specific to this repository's `.agents/` folder.
+How to write a good skill (intent, writing, evals, registration, release) is
+owned by `create-skill`, in
+[plugins/skill-factory/skills/create-skill/](../../../plugins/skill-factory/skills/create-skill/SKILL.md).
+Do not restate it here or anywhere else: link it.
 
 ## Hard rules
 
-- **Challenge before writing.** If the request duplicates a skill, has no clear
-  trigger, hard-codes volatile facts or hides a side effect behind auto mode,
-  say so in two sentences with a better option, then follow the user's call.
-  Never "fix" scope silently in the diff.
-- **Test cases before the skill.** No eval, no skill.
-- **English only** in repository files; the skill tells the agent to answer in
-  the user's language.
-- **`SKILL.md` ≤ 200 lines.** Details go to `references/`, one level deep.
-- **Only what the model does not already know.** Cut every sentence a strong
-  model would do anyway; keep the decisions, the traps and the order.
-- **Never edit under `.claude/`**: it is a link to `.agents/`.
-- **Done means verified**: every command in step 6 passed, and you say which
-  ones you ran.
+- **Never create or edit anything under `.claude/`.** It is a git-ignored link
+  to `.agents/`, created by `npm run setup`. Write to `.agents/`; if a tool
+  wrote through `.claude/`, check `git status` and commit only what belongs.
+- **Challenge before writing.** Search existing skills and subagents first
+  (`Grep` their `description:` lines). Extending one beats a near-duplicate
+  that splits the trigger. Say so in two sentences, then follow the user.
+- **Done means verified**: `npm run verify` passed, and you say what you ran.
 
 ## 1. Decide where it lives
 
-| Kind                                                  | Path                              | Ships to users |
-| ----------------------------------------------------- | --------------------------------- | -------------- |
-| Distributed (catalog, installers, plugin marketplace) | `plugins/<plugin>/skills/<name>/` | yes            |
-| Repo-internal (tooling for agents working here)       | `.agents/skills/<name>/`          | no             |
-| Subagent that runs a workflow in its own context      | `.agents/agents/<name>.md`        | no             |
+| It is…                                                        | Path                              | Method                     |
+| ------------------------------------------------------------- | --------------------------------- | -------------------------- |
+| A skill for users (catalog, installers, marketplace, release) | `plugins/<plugin>/skills/<name>/` | `create-skill`, end to end |
+| A skill for agents working in this repository only            | `.agents/skills/<name>/`          | steps 2–3 below            |
+| A subagent that runs a workflow in its own context            | `.agents/agents/<name>.md`        | step 4 below               |
 
-Search first (`Grep` the `description:` lines of every `SKILL.md`): extending
-an existing skill beats adding a near-duplicate that splits the trigger.
+When unsure, ask: would a stranger who installs the catalog want it? Yes →
+plugin. Only useful with this repository checked out → `.agents/`.
 
-A distributed skill folder is copied alone by installers: no link may leave it,
-nothing in it may be repo-only (tests, fixtures, repo commands).
+For a shipped skill, stop here and follow `create-skill`. If it is not loaded,
+read its `SKILL.md` at the path above.
 
-## 2. Name it
+## 2. Write a repo-internal skill
 
-Imperative verb + object, lowercase-hyphen, ≤ 64 chars, equal to the folder:
-`coach-my-finances`, `build-harness`, `run-test`. Reject nouns (`harness`) and
-vague verbs (`handle`, `manage`, `do`). No `claude` or `anthropic`. Renaming a
-shipped skill is a breaking change (`feat!:` + `BREAKING CHANGE:` footer).
+Same writing standard as shipped skills: follow `create-skill`'s
+[writing-guide.md](../../../plugins/skill-factory/skills/create-skill/references/writing-guide.md)
+and [frontmatter.md](../../../plugins/skill-factory/skills/create-skill/references/frontmatter.md)
+(five keys, booleans written out, `description: >-`, ≤ 200 lines). What
+differs, because it never leaves the repository:
 
-## 3. Write the test cases first
+- `test_cases.md` sits **in the skill folder**, ≥ 3 cases, written first.
+- It **may link** to repository files (docs, scripts, plugin references):
+  link instead of copying.
+- It is **not** registered: no marketplace entry, README catalog row,
+  release-please entry or `build:skills` bundle.
+- Shared tooling belongs to the skill that owns it, e.g. this skill's
+  [validate_skill.js](scripts/validate_skill.js), which `check-repo.mjs` runs
+  on every skill.
 
-Distributed: `plugins/<plugin>/evals/test_cases.md`. Internal: `test_cases.md`
-in the skill folder. At least 3 `## Case N: …` sections, each with **Input**
-and **Expected Output**:
+## 3. Verify and evaluate
 
-1. Happy path, with the exact words a user would type.
-2. Missing prerequisite (no MCP, no data, no access): the skill says what is
-   missing and how to fix it, never fails silently.
-3. A request the skill must refuse, challenge or narrow.
+```bash
+node .agents/skills/create-or-update-skill/scripts/validate_skill.js .agents/skills/<name>
+npm run verify
+```
 
-Mock external services so evals run without real accounts (see
-`plugins/finary-coach/evals/`). Fixtures are synthetic: no real personal data.
+Then run its cases with fresh subagents as described in `create-skill`'s
+[evals-with-subagents.md](../../../plugins/skill-factory/skills/create-skill/references/evals-with-subagents.md).
+If you cannot start subagents, hand the cases to the caller.
 
-## 4. Write `SKILL.md`
+## 4. Write a subagent
 
-Frontmatter — these five keys, nothing else, booleans written out:
+A subagent is a Markdown file with YAML frontmatter, read by Claude Code
+through the `.claude` link:
 
 ```yaml
 ---
-name: verb-object
+name: verb-object # = file name
 description: >-
-  <What it does, third person, concrete nouns.> Use when <the words users
-  type, in their languages>.
-effort: low | medium | high | xhigh | max
-disable-model-invocation: false
-user-invocable: true
+  <What it does end to end.> Use when <the situation that should delegate to
+  it>.
+tools: Read, Grep, Glob # least privilege: add Write, Edit, Bash only if needed
+skills:
+  - <skill it applies> # preloaded; the body names a fallback path
+model: inherit
 ---
 ```
 
-**The description is the trigger.** Agents list only `name` and `description`,
-in every session; nothing else is seen before the skill loads. ~250 chars,
-≤ 1024, no XML tags, always `>-` (a colon followed by a space in plain YAML drops the
-frontmatter in Claude Code).
+The body is its whole world: it sees none of the caller's conversation and
+cannot ask the user anything. So it must say:
 
-- Weak: `Helps with finances.` — no object, no trigger, collides with
-  everything.
-- Strong: `Coaches a French investor on their Finary portfolio: safety cushion,
-PEA vs CTO, fees. Use when the user asks about savings, épargne, PEA…`
+1. The job and the bar it is judged on.
+2. When to **stop and return a question** instead of guessing.
+3. What it may touch, and that it never commits or pushes unless the caller
+   asked.
+4. What it cannot do (subagents start no subagents) and what it hands back
+   instead.
+5. The exact shape of its final report: verdict first, no preamble.
 
-**Invocation mode** — choose deliberately, always both fields:
+Give it the same name as the skill it runs when it is that skill's isolated
+runner (like this one: `.agents/agents/create-or-update-skill.md`).
 
-| Mode       | `disable-model-invocation` | `user-invocable` | For                                                   |
-| ---------- | -------------------------- | ---------------- | ----------------------------------------------------- |
-| Auto       | `false`                    | `true`           | read-only workflows                                   |
-| Agent only | `false`                    | `false`          | background rules the agent applies (criteria, styles) |
-| Manual     | `true`                     | `true`           | side effects: publish, post, deploy, pay; costly runs |
+## Updating
 
-Manual also requires: description starting with `Manual only`, and
-`agents/openai.yaml` containing `policy:` → `allow_implicit_invocation: false`
-(Codex). `true` / `false` is unreachable and rejected.
-
-**Body**, in this order:
-
-1. One paragraph: the job and the outcome.
-2. Hard rules (never / always / ask first) — the lines that prevent damage.
-3. A numbered workflow, with a copyable checklist when it has more than 4
-   steps.
-4. Links to `references/<topic>.md` for templates, long tables, setup guides.
-   Reference files over 100 lines start with a table of contents.
-
-Craft rules: forward slashes in paths; MCP tools named by suffix (the prefix
-depends on the client) with setup steps when missing; volatile facts (rates,
-ceilings, prices, versions) verified on an official source and cited with the
-date, or not given at all; scripts are executed, not read — say what they
-print.
-
-## 5. Register it (distributed only)
-
-- New plugin: `plugins/<plugin>/.claude-plugin/plugin.json` (name = entry
-  name), an entry in `.claude-plugin/marketplace.json`, its own `README.md`,
-  `LICENSE` (MIT), `install.sh` and `install.ps1`, and an entry in
-  `release-please-config.json` and `.release-please-manifest.json`.
-- A row in the README catalog, and a usage example under `## Use`.
-- Details: the `create-skill` skill's `registration-and-release.md` in
-  `plugins/skill-factory/`.
-
-## 6. Verify
-
-```bash
-node .agents/skills/create-or-update-skill/scripts/validate_skill.js <skill-folder>
-npm run verify          # includes claude plugin validate
-npm run build:skills    # shipped skills: claude.ai bundles
-```
-
-Fix the cause of a failure, never the check. Never `--no-verify`.
-
-## 7. Evaluate
-
-For each test case, start a **fresh agent** that gets only the skill and the
-case input — never the expected output — and grade its answer against the
-case. Fix the skill, re-run the failing cases. A behaviour change without a
-re-run eval is not done. If you cannot start agents, say so and hand the cases
-to the caller.
-
-## Updating a skill
-
-Read the whole skill and its test cases first. Add a case that fails today,
-make it pass, re-run the others: an update must not regress a case. Keep the
-name and the trigger words users already rely on.
+Read the whole file and its test cases first. Add a case that fails today,
+make it pass, re-run the others. Keep the name and trigger words: renaming
+breaks whoever relies on them.
 
 ## Report
 
-End with: files changed, invocation mode and why, commands run with results,
-eval cases passed / failed / not run, and any challenge left open for the user.
+Files changed, location and why, commands run with results, eval cases passed
+/ failed / not run, and any challenge left open for the user.
