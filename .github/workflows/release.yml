@@ -3,47 +3,38 @@ name: Release skills
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
-  pull-requests: write
+
+# One release run at a time, never cancelled half-way through a publish.
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Open or update release PRs, publish merged ones
-        id: release
-        uses: googleapis/release-please-action@v5.0.0
-        with:
-          config-file: release-please-config.json
-          manifest-file: .release-please-manifest.json
-
-      - name: Get the repository
-        if: steps.release.outputs.releases_created == 'true'
+      - name: Get the repository with its tags
         uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
 
       - name: Use the pinned Node.js version
-        if: steps.release.outputs.releases_created == 'true'
         uses: actions/setup-node@v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
 
       - name: Install the build tooling
-        if: steps.release.outputs.releases_created == 'true'
         run: npm run setup
 
-      - name: Attach skill bundles to each published release
-        if: steps.release.outputs.releases_created == 'true'
+      - name: Release every plugin whose skills changed
         env:
           GH_TOKEN: ${{ github.token }}
-          PATHS_RELEASED: ${{ steps.release.outputs.paths_released }}
-          OUTPUTS: ${{ toJSON(steps.release.outputs) }}
         run: |
-          for path in $(echo "$PATHS_RELEASED" | jq -r '.[]'); do
-            plugin="$(basename "$path")"
-            tag="$(echo "$OUTPUTS" | jq -r --arg k "$path--tag_name" '.[$k]')"
-            npm run build:skills -- "$plugin"
-            gh release upload "$tag" dist/"$plugin"/*.zip --clobber
-          done
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/release-plugins.mjs

@@ -72,7 +72,7 @@ Breaking change (renamed skill, removed plugin): add `!` after the type and a
 - Each plugin has `evals/test_cases.md` with at least 3 cases.
 - Each plugin is isolated: its own `README.md` (listing its skills), `LICENSE` (MIT, `plugin.json` license `MIT`), `install.sh` and `install.ps1`.
 - Each skill appears in the README catalog.
-- Every plugin is in `release-please-config.json` (component = plugin name) and `.release-please-manifest.json`, with the same version as its `plugin.json`.
+- Every `plugin.json` has an `x.y.z` version.
 - Every relative Markdown link resolves.
 
 How to write a skill: [docs/skill-authoring-guide.md](docs/skill-authoring-guide.md).
@@ -86,8 +86,13 @@ How to write a skill: [docs/skill-authoring-guide.md](docs/skill-authoring-guide
 
 ## Releases
 
-Never edit versions or `CHANGELOG.md` by hand. On every merge to `main`,
-[release-please](https://github.com/googleapis/release-please-action) opens a
-release PR per changed plugin (`feat` → minor, `fix` → patch, `!` → major).
-Merging it tags `<plugin>-v<version>`, publishes the GitHub Release and attaches
-the skill zips built by `npm run build:skills`.
+Never edit versions or `CHANGELOG.md` by hand. On every merge to `main`, the
+[release workflow](.github/workflows/release.yml) runs
+[release-plugins.mjs](scripts/release-plugins.mjs): each plugin with a commit
+touching `plugins/<plugin>/skills/` since its last tag is released at once,
+with no release PR (`!` → major, `feat` → minor, anything else → patch). It
+commits the new `plugin.json` version and `CHANGELOG.md` to `main`, tags
+`<plugin>-v<version>`, publishes the GitHub Release and attaches the skill zips
+built by `npm run build:skills`. A plugin whose current version has no tag yet
+is released at that version. `node scripts/release-plugins.mjs --dry-run`
+prints what the next run would publish.

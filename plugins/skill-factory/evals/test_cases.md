@@ -1,5 +1,6 @@
-# Test Cases for create-skill
+# Test Cases for skill-factory
 
+Cases 1–5 test `create-skill`, cases 6–9 test `create-or-update-plugin`.
 Run each case with a fresh subagent that reads only the skill, in a scratch
 copy of the repository (`git worktree add`), so files it creates do not touch
 the real checkout.
@@ -15,8 +16,8 @@ non-développeur." (the user then confirms the restated intent)
 - Writes `test_cases.md` (≥ 3 cases) before `SKILL.md`.
 - `SKILL.md`: English, ≤ 200 lines, exactly the 5 frontmatter keys, folded
   `description: >-` with a "Use when" clause, name like `summarize-pr`.
-- Registers it: marketplace entry (if new plugin), README catalog row,
-  release-please config and manifest; `npm run verify` passes.
+- Registers it: marketplace entry (if new plugin), README catalog row;
+  creates no release config; `npm run verify` passes.
 
 ## Case 2: Turn the conversation into a skill
 
@@ -57,3 +58,52 @@ France."
 
 - The skill contains a fact-check step for tax rates (official source + date)
   instead of a hard-coded rate.
+
+## Case 6: New plugin with its first skill
+
+**Input**: "Crée un plugin `pr-tools` pour regrouper mes skills GitHub, le
+premier sera summarize-pr."
+**Expected Output**:
+
+- Restates name, display name, one-line description, category, tags and MCP
+  needs in one message and waits for a yes.
+- Scaffolds `plugin.json` (version `0.1.0`), the marketplace entry, `README.md`,
+  `LICENSE`, `install.sh`, `install.ps1` from its own `assets/`, with no
+  `{{PLACEHOLDER}}` left.
+- Hands the skill itself to `create-skill` (a plugin without a skill and
+  3 test cases fails `npm run verify`) instead of writing `SKILL.md` alone.
+- Creates no release config, `CHANGELOG.md` or tag; says the merge publishes
+  `pr-tools-v0.1.0`.
+
+## Case 7: Outside the repository
+
+**Input**: "Ajoute un plugin `notes` à mon catalogue." in a folder with no
+`.claude-plugin/marketplace.json`.
+**Expected Output**:
+
+- Says the skill works only in a checkout of flotoz/Skills (or a fork) and
+  that `.claude-plugin/marketplace.json` is missing.
+- Gives the clone command and stops; creates no file.
+
+## Case 8: Breaking rename
+
+**Input**: "Renomme le plugin finary-coach en money-coach."
+**Expected Output**:
+
+- Before editing, explains what breaks: `claude plugin install
+finary-coach@flotoz-skills`, the installer URLs, the `finary-coach-v*` tags.
+- Proposes changing only `displayName` instead, and asks which one.
+- If the user still wants the rename: updates every reference (marketplace,
+  README catalog and install sections, plugin README, installers) and uses a
+  `feat(money-coach)!:` commit with a `BREAKING CHANGE:` footer.
+- Puts old-name hits under `plugins/skill-factory/skills/` in a separate
+  non-breaking commit, and says the merge publishes `money-coach-v1.0.0`.
+
+## Case 9: Metadata-only update
+
+**Input**: "Ajoute le mot-clé `patrimoine` au plugin finary-coach."
+**Expected Output**:
+
+- Adds it to both `plugin.json` `keywords` and the marketplace entry `tags`.
+- Never edits `version` or `CHANGELOG.md`.
+- Says that a change outside `skills/` publishes no new release.

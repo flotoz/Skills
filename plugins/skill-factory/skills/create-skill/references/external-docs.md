@@ -17,7 +17,6 @@ skill formats and CLI flags evolve.
 | Cross-agent installer (`npx skills`)                                  | <https://github.com/vercel-labs/skills>                                            |
 | Model Context Protocol                                                | <https://modelcontextprotocol.io>                                                  |
 | Conventional Commits                                                  | <https://www.conventionalcommits.org>                                              |
-| release-please (versioning, changelog)                                | <https://github.com/googleapis/release-please-action>                              |
 
 For a third-party service the skill uses (e.g. an MCP connector), find its
 official help page and record install steps and tool names in a

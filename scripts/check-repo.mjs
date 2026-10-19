@@ -159,6 +159,9 @@ function checkPlugin(pluginDir, entry, marketplaceFile) {
       `name "${manifest.name}" must equal the marketplace entry "${entry.name}"`,
     );
   }
+  // scripts/release-plugins.mjs bumps and tags this version.
+  if (manifest && !/^\d+\.\d+\.\d+$/.test(manifest.version ?? ""))
+    fail(manifestFile, `version "${manifest.version}" must be x.y.z`);
   const mcpFile = join(pluginDir, ".mcp.json");
   if (existsSync(mcpFile)) readJson(mcpFile);
 
@@ -174,7 +177,7 @@ function checkPlugin(pluginDir, entry, marketplaceFile) {
   // Each plugin is isolated: its own doc, MIT license and installers.
   for (const file of PLUGIN_FILES) {
     if (!existsSync(join(pluginDir, file)))
-      fail(pluginDir, `missing ${file} (see create-skill assets/plugin/)`);
+      fail(pluginDir, `missing ${file} (see create-or-update-plugin assets/)`);
   }
   if (manifest && manifest.license !== "MIT")
     fail(manifestFile, 'license must be "MIT"');
@@ -254,42 +257,6 @@ for (const folder of existsSync(pluginsRoot) ? readdirSync(pluginsRoot) : []) {
     );
   }
 }
-// Release pipeline: every plugin is versioned by release-please and built by build-skills.
-const releaseConfigFile = join(ROOT, "release-please-config.json");
-const releaseManifestFile = join(ROOT, ".release-please-manifest.json");
-if (existsSync(releaseConfigFile)) {
-  const releaseConfig = readJson(releaseConfigFile) ?? {};
-  const releaseManifest = existsSync(releaseManifestFile)
-    ? (readJson(releaseManifestFile) ?? {})
-    : {};
-  for (const entry of marketplace?.plugins ?? []) {
-    if (typeof entry.source !== "string") continue;
-    const path = entry.source.replace(/^\.\//, "");
-    const pkg = releaseConfig.packages?.[path];
-    if (!pkg)
-      fail(
-        releaseConfigFile,
-        `packages["${path}"] missing for plugin "${entry.name}"`,
-      );
-    else if (pkg.component !== entry.name)
-      fail(
-        releaseConfigFile,
-        `packages["${path}"].component must be "${entry.name}"`,
-      );
-    if (!releaseManifest[path]) fail(releaseManifestFile, `"${path}" missing`);
-    const manifestFile = join(ROOT, path, ".claude-plugin", "plugin.json");
-    const version = existsSync(manifestFile)
-      ? readJson(manifestFile)?.version
-      : undefined;
-    if (releaseManifest[path] && version !== releaseManifest[path]) {
-      fail(
-        manifestFile,
-        `version ${version} differs from .release-please-manifest.json (${releaseManifest[path]})`,
-      );
-    }
-  }
-}
-
 // Repo-internal skills (.agents/skills/): same frontmatter rules, not in the catalog.
 const internalSkillsDir = join(ROOT, ".agents", "skills");
 const internalSkills = existsSync(internalSkillsDir)
