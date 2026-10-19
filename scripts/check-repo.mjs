@@ -177,7 +177,7 @@ function checkPlugin(pluginDir, entry, marketplaceFile) {
   // Each plugin is isolated: its own doc, MIT license and installers.
   for (const file of PLUGIN_FILES) {
     if (!existsSync(join(pluginDir, file)))
-      fail(pluginDir, `missing ${file} (see create-skill assets/plugin/)`);
+      fail(pluginDir, `missing ${file} (see create-or-update-plugin assets/)`);
   }
   if (manifest && manifest.license !== "MIT")
     fail(manifestFile, 'license must be "MIT"');

@@ -111,8 +111,8 @@ Layout:
 plugins/<plugin>/
 ├── .claude-plugin/plugin.json
 ├── .mcp.json                 # only if the skill needs MCP servers
-├── README.md, LICENSE        # plugin doc + MIT license (from assets/plugin/)
-├── install.sh, install.ps1   # plugin installers (from assets/plugin/)
+├── README.md, LICENSE        # plugin doc + MIT license (create-or-update-plugin)
+├── install.sh, install.ps1   # plugin installers (create-or-update-plugin)
 ├── skills/<skill>/           # installed on users' machines
 │   ├── SKILL.md
 │   ├── references/*.md
@@ -141,9 +141,8 @@ checklist from the writing guide.
 
 Follow [references/registration-and-release.md](references/registration-and-release.md):
 
-- new plugin → entry in `.claude-plugin/marketplace.json`, `plugin.json`,
-  its own `README.md`, `LICENSE` (MIT) and `install.sh`/`install.ps1`
-  from [assets/plugin/](assets/plugin/README.md);
+- new plugin → follow the `create-or-update-plugin` skill first (plugin.json,
+  marketplace entry, README, LICENSE, installers);
 - skill → row in the root README catalog (Plugin column links the plugin
   README) and in the plugin README;
 - `npm run build:skills` must produce `dist/<plugin>/<skill>.zip`.

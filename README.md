@@ -8,10 +8,11 @@ as a Claude Code plugin marketplace and released as versioned bundles.
 
 ## Catalog
 
-| Skill                                                                       | Plugin                                             | What it does                                                                                                                                                                                                                         |
-| --------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [coach-my-finances](plugins/finary-coach/skills/coach-my-finances/SKILL.md) | [`finary-coach`](plugins/finary-coach/README.md)   | Personal finance coach reading your Finary account through the official MCP: safety cushion, 50/30/20 budget, PEA vs CTO, US / Europe / China exposure, fees, crypto share. Tax rates and ceilings fact-checked on official sources. |
-| [create-skill](plugins/skill-factory/skills/create-skill/SKILL.md)          | [`skill-factory`](plugins/skill-factory/README.md) | Creates or updates a skill end to end: intent interview, SKILL.md with this repo's rules, evals run by fresh subagents, registration in the marketplace and the build, release.                                                      |
+| Skill                                                                                    | Plugin                                             | What it does                                                                                                                                                                                                                         |
+| ---------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [coach-my-finances](plugins/finary-coach/skills/coach-my-finances/SKILL.md)              | [`finary-coach`](plugins/finary-coach/README.md)   | Personal finance coach reading your Finary account through the official MCP: safety cushion, 50/30/20 budget, PEA vs CTO, US / Europe / China exposure, fees, crypto share. Tax rates and ceilings fact-checked on official sources. |
+| [create-skill](plugins/skill-factory/skills/create-skill/SKILL.md)                       | [`skill-factory`](plugins/skill-factory/README.md) | Creates or updates a skill end to end: intent interview, SKILL.md with this repo's rules, evals run by fresh subagents, registration in the marketplace and the build, release.                                                      |
+| [create-or-update-plugin](plugins/skill-factory/skills/create-or-update-plugin/SKILL.md) | [`skill-factory`](plugins/skill-factory/README.md) | Creates, updates, renames or removes a plugin: plugin.json, marketplace entry, README, license, installers and MCP servers kept in sync, breaking changes flagged before editing.                                                    |
 
 ## Install
 
@@ -111,6 +112,18 @@ It interviews you, researches with subagents, writes test cases first, drafts
 the skill, evaluates it with fresh subagents, registers it (marketplace,
 catalog) and opens the PR.
 
+### create-or-update-plugin
+
+Run it inside a clone of this repository:
+
+```text
+/create-or-update-plugin a pr-tools plugin for my GitHub skills
+```
+
+It scaffolds or updates the plugin files, keeps the marketplace and catalog in
+sync, warns before a breaking rename or removal, and hands each new skill to
+`create-skill`.
+
 ## Releases
 
 Versioning is automatic from [Conventional Commits](https://www.conventionalcommits.org):
@@ -145,6 +158,7 @@ Build the bundles locally with `npm run build:skills`.
 │       ├── .claude-plugin/plugin.json
 │       ├── README.md, LICENSE, install.sh, install.ps1
 │       ├── skills/create-skill/        # installed: SKILL.md, references/, assets/
+│       ├── skills/create-or-update-plugin/  # installed: SKILL.md, references/, assets/
 │       └── evals/
 ├── scripts/
 │   ├── check-repo.mjs                  # repository rules (npm run verify:rules)

@@ -5,37 +5,10 @@ release pipeline all know it.
 
 ## New plugin
 
-1. `plugins/<plugin>/.claude-plugin/plugin.json`:
-
-   ```json
-   {
-     "name": "<plugin>",
-     "displayName": "<Human Name>",
-     "version": "0.1.0",
-     "description": "<what it brings, one sentence>",
-     "author": { "name": "<author>", "url": "https://github.com/<user>" },
-     "homepage": "https://github.com/flotoz/Skills",
-     "repository": "https://github.com/flotoz/Skills",
-     "license": "MIT",
-     "keywords": ["<topic>"]
-   }
-   ```
-
-2. Entry in `.claude-plugin/marketplace.json` → `plugins`: `name` equal to
-   `plugin.json`, `source: "./plugins/<plugin>"`, `description`, `category`,
-   `tags`.
-3. `.mcp.json` next to `plugin.json` if the skill needs MCP servers.
-4. Isolation files, copied from `assets/plugin/` with every `{{PLACEHOLDER}}`
-   replaced (`{{PLUGIN}}`, `{{SKILL}}`, `{{DISPLAY_NAME}}`, `{{YEAR}}`,
-   `{{AUTHOR}}`):
-   - `README.md`: what the plugin does, skills table, prerequisites (MCP,
-     accounts), install commands, usage, license;
-   - `LICENSE`: MIT, current year and author;
-   - `install.sh` / `install.ps1`: wrappers that call the root installer
-     with `--plugin <plugin>`, locally or from GitHub. `chmod +x install.sh`.
-
-No release config: the version in `plugin.json` is the only source, and the
-first merge publishes it.
+Use the `create-or-update-plugin` skill: it creates `plugin.json`, the
+marketplace entry, the plugin README, LICENSE and installers, then hands the
+first skill back to this skill. No release config: the first merge publishes
+`<plugin>-v0.1.0`.
 
 ## New skill in an existing plugin
 
