@@ -37,7 +37,7 @@ block `description: >-` for multi-line descriptions.
 | Mode       | `disable-model-invocation` | `user-invocable` | Use for                                                   |
 | ---------- | -------------------------- | ---------------- | --------------------------------------------------------- |
 | Auto       | `false`                    | `true`           | Read-only or repository-only workflows                    |
-| Agent only | `false`                    | `false`          | Background rules or knowledge, not a command              |
+| Agent only | `false`                    | `false`          | Rules applied inside other work, never a job on its own   |
 | Manual     | `true`                     | `true`           | Side effects outside the repo: publish, post, pay, deploy |
 
 A manual skill also needs:
@@ -48,6 +48,12 @@ A manual skill also needs:
 
 `disable-model-invocation: true` with `user-invocable: false` is unreachable
 and rejected.
+
+`user-invocable: false` only removes the `/` command: the agent still loads
+the skill when its description matches. So Agent only fits rules that other
+work applies (a house writing style, the criteria a review uses), never a job
+users ask for by name. Criteria the user wants applied on request ("is this
+savings account good?") make an Auto skill.
 
 ## Description that triggers
 
