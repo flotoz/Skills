@@ -19,6 +19,11 @@ Its references are the single source of truth for how skills are written here
 | Official documentation                                                  | [external-docs.md](../plugins/skill-factory/skills/create-skill/references/external-docs.md)                                                                                                     |
 | Templates                                                               | [SKILL.template.md](../plugins/skill-factory/skills/create-skill/assets/SKILL.template.md), [test_cases.template.md](../plugins/skill-factory/skills/create-skill/assets/test_cases.template.md) |
 
+Repository-only skills (tooling for agents working here) go to
+`.agents/skills/<skill-name>/`: same frontmatter rules, not in the catalog,
+may link to the repository docs; agents use
+[create-or-update-skill](../.agents/skills/create-or-update-skill/SKILL.md).
+
 ## Non-negotiables
 
 - English, `SKILL.md` ≤ 200 lines, details in `references/`.

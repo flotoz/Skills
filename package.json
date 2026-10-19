@@ -14,7 +14,7 @@
     "verify:docs": "markdownlint-cli2 && prettier --check .",
     "verify:plugins": "node scripts/validate-plugins.mjs",
     "fix:docs": "prettier --write . && markdownlint-cli2 --fix",
-    "prepare": "lefthook install --reset-hooks-path",
+    "prepare": "lefthook install --reset-hooks-path && node scripts/link-agents.mjs",
     "build:skills": "node scripts/build-skills.mjs"
   },
   "commitlint": {

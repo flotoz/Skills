@@ -12,6 +12,8 @@
   "ignores": [
     "node_modules/**",
     "dist/**",
+    ".claude/**",
+    ".agents/worktrees/**",
     "**/CHANGELOG.md",
     "**/evals/out/**",
     "**/evals/results/**",

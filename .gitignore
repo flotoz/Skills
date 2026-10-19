@@ -1,2 +1,11 @@
 node_modules/
 dist/
+
+# Agent config lives in .agents/ (committed). .claude is a local link to it,
+# created by `npm run setup` — never commit it, never write into it by hand.
+# No trailing slash: Git sees a symlink as a file.
+.claude
+# Machine-local files Claude Code writes through that link.
+.agents/worktrees/
+.agents/settings.local.json
+.agents/*.local.*

@@ -128,6 +128,10 @@ Build the bundles locally with `npm run build:skills`.
 
 ```text
 .
+├── AGENTS.md                         # rules for agents working here
+├── .agents/                          # agent config, single source of truth (.claude links here)
+│   ├── skills/create-or-update-skill/  # repo skill rules + validate_skill.js
+│   └── agents/create-or-update-skill.md
 ├── .claude-plugin/marketplace.json   # plugin catalog (marketplace "flotoz-skills")
 ├── plugins/
 │   ├── finary-coach/
@@ -144,7 +148,7 @@ Build the bundles locally with `npm run build:skills`.
 │       └── evals/
 ├── scripts/
 │   ├── check-repo.mjs                  # repository rules (npm run verify:rules)
-│   ├── validate_skill.js               # skill structure and invocation mode
+│   ├── link-agents.mjs                 # links .claude → .agents (npm run setup)
 │   └── build-skills.mjs                # compiles dist/<plugin>/<skill>.zip
 ├── release-please-config.json          # one release package per plugin
 ├── .release-please-manifest.json       # current version per plugin
@@ -155,7 +159,7 @@ Build the bundles locally with `npm run build:skills`.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md): `npm run onboard` checks Node.js, installs
+Agents follow [AGENTS.md](AGENTS.md). See [CONTRIBUTING.md](CONTRIBUTING.md): `npm run onboard` checks Node.js, installs
 the tooling, the Git hooks (formatting, repository rules, Conventional Commits)
 and the Claude Code CLI. Add skills with `/create-skill`, or by hand following
 [docs/skill-authoring-guide.md](docs/skill-authoring-guide.md).

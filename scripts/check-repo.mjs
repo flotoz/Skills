@@ -42,7 +42,16 @@ const readJson = (file) => {
 
 function walk(dir, files = []) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
-    if ([".git", "node_modules", "out", "results"].includes(entry.name))
+    if (
+      [
+        ".git",
+        ".claude",
+        "node_modules",
+        "out",
+        "results",
+        "worktrees",
+      ].includes(entry.name)
+    )
       continue;
     const path = join(dir, entry.name);
     if (entry.isDirectory()) walk(path, files);
@@ -51,7 +60,9 @@ function walk(dir, files = []) {
   return files;
 }
 
-function checkSkill(skillDir) {
+// shipped: installed on users' machines (plugins/), so it must be self-contained.
+// Repo-internal skills (.agents/skills/) may link to the repository docs.
+function checkSkill(skillDir, { shipped = true } = {}) {
   const file = join(skillDir, "SKILL.md");
   const content = readFileSync(file, "utf8");
   const lines = content.split(/\r?\n/);
@@ -115,6 +126,7 @@ function checkSkill(skillDir) {
   if (/\]\([^)]*\\/.test(content)) fail(file, "use forward slashes in links");
 
   // A skill ships alone (installers, claude.ai zip): its links must stay inside its folder.
+  if (!shipped) return name;
   for (const mdFile of walk(skillDir).filter((path) => path.endsWith(".md"))) {
     const text = readFileSync(mdFile, "utf8")
       .replace(/```[\s\S]*?```/g, "")
@@ -278,6 +290,16 @@ if (existsSync(releaseConfigFile)) {
   }
 }
 
+// Repo-internal skills (.agents/skills/): same frontmatter rules, not in the catalog.
+const internalSkillsDir = join(ROOT, ".agents", "skills");
+const internalSkills = existsSync(internalSkillsDir)
+  ? readdirSync(internalSkillsDir).filter((name) =>
+      existsSync(join(internalSkillsDir, name, "SKILL.md")),
+    )
+  : [];
+for (const name of internalSkills)
+  checkSkill(join(internalSkillsDir, name), { shipped: false });
+
 for (const name of skillNames.filter(Boolean)) {
   if (!readme.includes(`[${name}]`))
     fail(join(ROOT, "README.md"), `skill "${name}" missing from the catalog`);
@@ -285,14 +307,23 @@ for (const name of skillNames.filter(Boolean)) {
 checkLinks(walk(ROOT));
 
 // Invocation-mode rules (manual skills, Codex policy) from the create-or-update-skill validator.
-for (const folder of existsSync(pluginsRoot) ? readdirSync(pluginsRoot) : []) {
-  const skillsDir = join(pluginsRoot, folder, "skills");
+const VALIDATOR = join(
+  internalSkillsDir,
+  "create-or-update-skill",
+  "scripts",
+  "validate_skill.js",
+);
+const skillsDirs = [
+  ...(existsSync(pluginsRoot) ? readdirSync(pluginsRoot) : []).map((folder) =>
+    join(pluginsRoot, folder, "skills"),
+  ),
+  ...(internalSkills.length > 0 ? [internalSkillsDir] : []),
+];
+for (const skillsDir of skillsDirs) {
   if (!existsSync(skillsDir)) continue;
-  const run = spawnSync(
-    process.execPath,
-    [join(ROOT, "scripts", "validate_skill.js"), skillsDir],
-    { encoding: "utf8" },
-  );
+  const run = spawnSync(process.execPath, [VALIDATOR, skillsDir], {
+    encoding: "utf8",
+  });
   if (run.status !== 0) fail(skillsDir, (run.stderr || run.stdout).trim());
 }
 
@@ -302,4 +333,6 @@ if (errors.length > 0) {
   );
   process.exit(1);
 }
-console.log(`✅ Repository rules OK (${skillNames.length} skill(s)).`);
+console.log(
+  `✅ Repository rules OK (${skillNames.length} shipped, ${internalSkills.length} internal skill(s)).`,
+);
