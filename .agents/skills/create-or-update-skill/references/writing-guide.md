@@ -101,3 +101,7 @@ answering from memory gets it wrong.
 - [ ] Volatile facts fact-checked, not hard-coded
 - [ ] No time-sensitive statements ("before August …")
 - [ ] Test cases ≥ 3 and all passing with fresh subagents
+- [ ] A baseline run without the skill fails at least one case the skill
+      passes (otherwise the case, or the skill, adds nothing)
+- [ ] Trigger check: 2–3 prompts that should load it and 1–2 near misses
+      that should not (generic questions, out-of-scope requests)

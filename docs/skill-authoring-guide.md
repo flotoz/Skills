@@ -31,9 +31,11 @@ to the repository docs; agents use
 
 - English, `SKILL.md` ≤ 200 lines, details in `references/`.
 - Exactly `name`, `description`, `effort`, `disable-model-invocation`,
-  `user-invocable`; multi-line description as `description: >-`.
+  `user-invocable` (plus `metadata:` → `internal: true` for repository-only
+  skills); multi-line description as `description: >-`.
 - `plugins/<plugin>/evals/test_cases.md` with ≥ 3 cases, passed by fresh
-  subagents.
+  subagents, with a baseline run and a trigger check that show the skill adds
+  something.
 - Registered in the marketplace and the README catalog.
 - `npm run verify` (which runs `claude plugin validate`) and `npm run build:skills` pass.
 - Conventional Commits, hooks never bypassed.

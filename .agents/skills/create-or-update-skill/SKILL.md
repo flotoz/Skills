@@ -92,7 +92,8 @@ traps, claude.ai build) and
 [references/writing-guide.md](references/writing-guide.md) (structure,
 progressive disclosure, review checklist).
 
-Frontmatter — these five keys, nothing else, booleans written out:
+Frontmatter — these five keys, nothing else, booleans written out
+(repo-internal skills add `metadata:` → `internal: true`, see frontmatter.md):
 
 ```yaml
 ---
