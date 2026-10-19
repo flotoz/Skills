@@ -53,10 +53,8 @@ release pipeline all know it.
 ## Verify
 
 ```bash
-npm run verify          # repository rules + docs formatting
+npm run verify          # repository rules, docs formatting, claude plugin validate
 npm run build:skills    # compiles dist/<plugin>/<skill>.zip
-claude plugin validate .
-claude plugin validate plugins/<plugin>
 ```
 
 `verify:rules` fails if the plugin is missing from the marketplace, names

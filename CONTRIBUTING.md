@@ -1,17 +1,29 @@
 # Contributing
 
-## Setup
+## Onboarding
+
+Prerequisites: Git and Node.js 26 (version in [.nvmrc](.nvmrc), e.g. `nvm use`).
 
 ```bash
-npm run setup
+git clone https://github.com/flotoz/Skills.git && cd Skills
+npm run onboard
 ```
 
-`npm run setup` installs the tooling and the Git hooks ([husky](https://typicode.github.io/husky/)):
+`npm run onboard` is safe to re-run. It:
 
-| Hook         | Runs                                                                                 | Blocks the commit when                                   |
-| ------------ | ------------------------------------------------------------------------------------ | -------------------------------------------------------- |
-| `pre-commit` | `lint-staged` (Prettier + markdownlint on staged files), then `npm run verify:rules` | a file is badly formatted or a repository rule is broken |
-| `commit-msg` | `commitlint`                                                                         | the message is not a Conventional Commit                 |
+1. checks Node.js against `.nvmrc`;
+2. installs the tooling at the exact versions of `package-lock.json`, Claude Code CLI included;
+3. installs the Git hooks with [lefthook](https://lefthook.dev) and proves the `commit-msg` hook rejects a bad message;
+4. runs `npm run verify`, including `claude plugin validate`.
+
+The Claude Code CLI is a devDependency like the rest of the tooling: `npm ci` installs the pinned version locally, nothing global.
+
+Hooks, defined in [lefthook.yml](lefthook.yml):
+
+| Hook         | Runs                                                                                  | Blocks the commit when                                   |
+| ------------ | ------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `pre-commit` | Prettier + markdownlint on staged files (fixes restaged), then `npm run verify:rules` | a file is badly formatted or a repository rule is broken |
+| `commit-msg` | `commitlint`                                                                          | the message is not a Conventional Commit                 |
 
 Never bypass them with `--no-verify`: CI runs the same checks.
 
@@ -39,14 +51,14 @@ Breaking change (renamed skill, removed plugin): add `!` after the type and a
 
 ## Commands
 
-| Command                    | What it does                                                                                                                   |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `npm run verify:rules`     | Repository rules ([check-repo.mjs](scripts/check-repo.mjs)) + skill structure ([validate_skill.js](scripts/validate_skill.js)) |
-| `npm run verify:docs`      | markdownlint + Prettier check                                                                                                  |
-| `npm run fix:docs`         | Fix formatting                                                                                                                 |
-| `npm run verify`           | Everything CI runs, except `claude plugin validate`                                                                            |
-| `claude plugin validate .` | Official marketplace / plugin / frontmatter check                                                                              |
-| `npm run build:skills`     | Compiles `dist/<plugin>/<skill>.zip` (claude.ai bundles)                                                                       |
+| Command                  | What it does                                                                                                                   |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| `npm run verify:rules`   | Repository rules ([check-repo.mjs](scripts/check-repo.mjs)) + skill structure ([validate_skill.js](scripts/validate_skill.js)) |
+| `npm run verify:docs`    | markdownlint + Prettier check                                                                                                  |
+| `npm run fix:docs`       | Fix formatting                                                                                                                 |
+| `npm run verify:plugins` | Official `claude plugin validate` on the marketplace and each plugin (local CLI from devDependencies)                          |
+| `npm run verify`         | Everything CI runs                                                                                                             |
+| `npm run build:skills`   | Compiles `dist/<plugin>/<skill>.zip` (claude.ai bundles)                                                                       |
 
 ## Rules enforced by `npm run verify:rules`
 
@@ -63,7 +75,7 @@ How to write a skill: [docs/skill-authoring-guide.md](docs/skill-authoring-guide
 ## Pull requests
 
 1. Branch from `main` (`feat/<skill>`, `fix/<topic>`, `docs/<topic>`).
-2. `npm run verify`, `npm run build:skills` and `claude plugin validate .` pass.
+2. `npm run verify` and `npm run build:skills` pass.
 3. Run the plugin's evals when behaviour changes (see its `evals/README.md`).
 4. Squash-merge with a Conventional Commit title.
 

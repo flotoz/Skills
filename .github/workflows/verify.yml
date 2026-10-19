@@ -38,10 +38,7 @@ jobs:
         run: npm run verify:docs
 
       - name: Claude Code accepts the marketplace, plugins and skills
-        run: |
-          npm install -g @anthropic-ai/claude-code@2.1.303
-          claude plugin validate .
-          for p in plugins/*/; do claude plugin validate "$p"; done
+        run: npm run verify:plugins
 
       - name: Mock MCP servers answer
         run: |

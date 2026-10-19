@@ -152,12 +152,11 @@ Follow [references/registration-and-release.md](references/registration-and-rele
 ### 7. Verify and ship
 
 ```bash
-npm run verify
+npm run verify          # includes claude plugin validate
 npm run build:skills
-claude plugin validate .
 ```
 
-All three pass, then:
+Both pass, then:
 
 - branch `feat/<skill>` (or `fix/<skill>`), commit with
   `feat(<skill>): …` — the hooks run formatting and the rules;
