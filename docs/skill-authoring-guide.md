@@ -28,6 +28,12 @@ and links must not leave it.
 
 ## Add a skill
 
+Agents: use the
+[create-or-update-skill](../.agents/skills/create-or-update-skill/SKILL.md)
+skill or subagent. Repository-only skills (tooling for agents working here)
+go to `.agents/skills/<skill-name>/` instead of a plugin: same frontmatter
+rules, not in the catalog, may link to the repository docs.
+
 1. Create `plugins/<plugin>/skills/<skill-name>/SKILL.md` (new plugin: also
    `.claude-plugin/plugin.json` and an entry in
    [marketplace.json](../.claude-plugin/marketplace.json)).

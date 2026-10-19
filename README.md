@@ -89,6 +89,10 @@ diagrams, a scorecard and at most 3 actions. Connect Finary first:
 
 ```text
 .
+├── AGENTS.md                         # rules for agents working here
+├── .agents/                          # agent config, single source of truth (.claude links here)
+│   ├── skills/create-or-update-skill/  # how skills are written + validate_skill.js
+│   └── agents/create-or-update-skill.md
 ├── .claude-plugin/marketplace.json   # plugin catalog (marketplace "flotoz-skills")
 ├── plugins/
 │   └── finary-coach/
@@ -98,7 +102,7 @@ diagrams, a scorecard and at most 3 actions. Connect Finary first:
 │       └── evals/                      # test cases, mock MCP, fixtures
 ├── scripts/
 │   ├── check-repo.mjs                  # repository rules (npm run verify:rules)
-│   └── validate_skill.js               # skill structure and invocation mode
+│   └── link-agents.mjs                 # links .claude → .agents (npm run setup)
 ├── docs/skill-authoring-guide.md
 ├── install.sh / install.ps1            # installers without Node.js
 └── .github/workflows/verify.yml        # CI
@@ -107,8 +111,9 @@ diagrams, a scorecard and at most 3 actions. Connect Finary first:
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md): `npm run setup` installs the tooling
-and the Git hooks (formatting, repository rules, Conventional Commits). Skill
-rules are in [docs/skill-authoring-guide.md](docs/skill-authoring-guide.md).
+and the Git hooks (formatting, repository rules, Conventional Commits). Agents
+follow [AGENTS.md](AGENTS.md); skill rules are in
+[docs/skill-authoring-guide.md](docs/skill-authoring-guide.md).
 
 ## License
 

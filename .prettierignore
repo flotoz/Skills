@@ -4,3 +4,5 @@ dist
 **/evals/out
 **/evals/results
 **/CHANGELOG.md
+.claude
+.agents/worktrees
