@@ -42,7 +42,7 @@ before analysing: it holds the method, thresholds and exposure benchmarks.
 
 ## Workflow
 
-```
+```text
 - [ ] 1. Finary MCP connected
 - [ ] 2. Question scoped + profile clarified
 - [ ] 3. Data read
@@ -96,14 +96,14 @@ what changes the answer, in one grouped message (max 5 questions):
 
 Call in parallel when possible:
 
-| Need | Tool |
-| --- | --- |
-| Net worth, asset classes | `get_portfolio_overview` |
-| Envelopes (Livret A, LDDS, LEP, PEA, AV, CTO, PER, crypto…) | `accounts` |
-| Lines, ISINs, fees, regions, sectors | `holdings` |
-| Income, spending, savings rate | `get_budget_overview`, `search_spending` |
-| Objectives | `goals` |
-| Projection | `simulate_compound_interest` |
+| Need                                                        | Tool                                     |
+| ----------------------------------------------------------- | ---------------------------------------- |
+| Net worth, asset classes                                    | `get_portfolio_overview`                 |
+| Envelopes (Livret A, LDDS, LEP, PEA, AV, CTO, PER, crypto…) | `accounts`                               |
+| Lines, ISINs, fees, regions, sectors                        | `holdings`                               |
+| Income, spending, savings rate                              | `get_budget_overview`, `search_spending` |
+| Objectives                                                  | `goals`                                  |
+| Projection                                                  | `simulate_compound_interest`             |
 
 If a tool fails or returns nothing, name it and continue with the rest.
 Sanity-check `simulate_compound_interest`: check whether `rate` is a percent
@@ -152,8 +152,3 @@ the pyramid: budget → cushion → envelopes/core → exposure → top.
   one stock, money needed in 2 years invested in equities).
 - Ask "why" about a surprising position before judging it.
 - When the data and the user's words disagree, show both and ask.
-
-## Validation
-
-- Behavioural cases: [test_cases.md](test_cases.md)
-- Structure: `node scripts/validate_skill.js plugins/finary-coach/skills`

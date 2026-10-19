@@ -5,7 +5,11 @@
     "currency": "EUR",
     "net_worth": 68500,
     "debts": 0,
-    "breakdown": { "checking_accounts": 2000, "savings_accounts": 16000, "investments": 50500 }
+    "breakdown": {
+      "checking_accounts": 2000,
+      "savings_accounts": 16000,
+      "investments": 50500
+    }
   },
   "accounts": [
     { "name": "Compte courant", "type": "checking", "balance": 2000 },
@@ -14,9 +18,28 @@
     { "name": "CTO", "type": "cto", "balance": 50000 }
   ],
   "holdings": [
-    { "account": "PEA", "name": "Amundi PEA MSCI World UCITS ETF", "isin": "FR001400U5Q4", "value": 500, "ter": 0.2 },
-    { "account": "CTO", "name": "Amundi PEA MSCI World UCITS ETF", "isin": "FR001400U5Q4", "value": 50000, "ter": 0.2, "unrealized_gain": 9000 }
+    {
+      "account": "PEA",
+      "name": "Amundi PEA MSCI World UCITS ETF",
+      "isin": "FR001400U5Q4",
+      "value": 500,
+      "ter": 0.2
+    },
+    {
+      "account": "CTO",
+      "name": "Amundi PEA MSCI World UCITS ETF",
+      "isin": "FR001400U5Q4",
+      "value": 50000,
+      "ter": 0.2,
+      "unrealized_gain": 9000
+    }
   ],
-  "get_budget_overview": { "currency": "EUR", "monthly_income": 3300, "monthly_spending": 2300, "savings_rate": 0.30, "automatic_transfers": [{ "to": "CTO", "monthly": 600 }] },
+  "get_budget_overview": {
+    "currency": "EUR",
+    "monthly_income": 3300,
+    "monthly_spending": 2300,
+    "savings_rate": 0.3,
+    "automatic_transfers": [{ "to": "CTO", "monthly": 600 }]
+  },
   "goals": []
 }

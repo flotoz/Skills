@@ -16,7 +16,7 @@ avoided. Risk always matches the person's age and horizon.
 
 ## The wealth pyramid
 
-```
+```text
               ▲  TOP  ≤ 5–10 %
              ╱ ╲  Bitcoin, watches, luxury,
             ╱   ╲ collectibles, single stocks
@@ -36,17 +36,17 @@ Build from the bottom up. A layer is not funded before the one below is solid.
 
 ## Thresholds
 
-| Layer | 🟢 Good | 🟠 Watch | 🔴 Act |
-| --- | --- | --- | --- |
-| Savings rate (net income) | ≥ 20 %, automated | 10–20 % or manual | < 10 % |
-| Needs / wants / savings | ≈ 50 / 30 / 20 | needs 50–60 % | needs > 60 % |
-| Emergency fund (months of expenses) | 3–6 | 1–3 or 6–12 | < 1 or > 12 (cash drag) |
-| Emergency fund location | Livret A / LDDS / LEP | savings account | current account |
-| Core fund fees (TER) | ≤ 0.3 % | 0.3–0.8 % | > 0.8 % (e.g. bank-managed funds) |
-| Core diversification | world / multi-region ETF | 1–3 regions | single country, sector or stock |
-| Top layer share of net worth | ≤ 5 % | 5–10 % | > 10 % |
-| Single line (outside world ETF) | ≤ 5 % | 5–10 % | > 10 % |
-| Consumer credit | none | low rate, short | revolving / > 5 % |
+| Layer                               | 🟢 Good                  | 🟠 Watch          | 🔴 Act                            |
+| ----------------------------------- | ------------------------ | ----------------- | --------------------------------- |
+| Savings rate (net income)           | ≥ 20 %, automated        | 10–20 % or manual | < 10 %                            |
+| Needs / wants / savings             | ≈ 50 / 30 / 20           | needs 50–60 %     | needs > 60 %                      |
+| Emergency fund (months of expenses) | 3–6                      | 1–3 or 6–12       | < 1 or > 12 (cash drag)           |
+| Emergency fund location             | Livret A / LDDS / LEP    | savings account   | current account                   |
+| Core fund fees (TER)                | ≤ 0.3 %                  | 0.3–0.8 %         | > 0.8 % (e.g. bank-managed funds) |
+| Core diversification                | world / multi-region ETF | 1–3 regions       | single country, sector or stock   |
+| Top layer share of net worth        | ≤ 5 %                    | 5–10 %            | > 10 %                            |
+| Single line (outside world ETF)     | ≤ 5 %                    | 5–10 %            | > 10 %                            |
+| Consumer credit                     | none                     | low rate, short   | revolving / > 5 %                 |
 
 Use 6 months (not 3) for self-employed, single income, or unstable jobs.
 Use 3 months for stable double-income households.
@@ -55,12 +55,12 @@ Use 3 months for stable double-income households.
 
 Equity share of the **invested** core (excluding the safety base):
 
-| Horizon | Equity ETFs | Bonds / euro funds / cash |
-| --- | --- | --- |
-| > 15 years | 80–100 % | 0–20 % |
-| 8–15 years | 60–80 % | 20–40 % |
-| 3–8 years | 30–60 % | 40–70 % |
-| < 3 years | 0–20 % | 80–100 % — money needed soon is not invested in equities |
+| Horizon    | Equity ETFs | Bonds / euro funds / cash                                |
+| ---------- | ----------- | -------------------------------------------------------- |
+| > 15 years | 80–100 %    | 0–20 %                                                   |
+| 8–15 years | 60–80 %     | 20–40 %                                                  |
+| 3–8 years  | 30–60 %     | 40–70 %                                                  |
+| < 3 years  | 0–20 %      | 80–100 % — money needed soon is not invested in equities |
 
 Rule of thumb when the horizon is unclear: equity ≈ 110 − age, then adjust to
 the stated tolerance to a 30 % drawdown. Horizon matters more than age: a
@@ -72,14 +72,14 @@ The neutral reference is the **world equity market** (an MSCI ACWI / FTSE
 All-World type index). Approximate weights, to re-check against the index
 factsheet when precision matters:
 
-| Region | ≈ World weight | 🟠 Watch | 🔴 Act |
-| --- | --- | --- | --- |
-| United States | ~60–65 % | > 75 % or < 45 % | > 85 % (e.g. S&P 500 / Nasdaq only) |
-| Europe (incl. UK, CH) | ~15 % | > 35 % (home bias) | > 50 % |
-| Japan | ~5 % | — | — |
-| Emerging markets | ~10 % | > 20 % | > 30 % |
-| China (incl. HK) | ~3 % | > 8 % | > 15 % |
-| Single country other than US | — | > 20 % | > 35 % |
+| Region                       | ≈ World weight | 🟠 Watch           | 🔴 Act                              |
+| ---------------------------- | -------------- | ------------------ | ----------------------------------- |
+| United States                | ~60–65 %       | > 75 % or < 45 %   | > 85 % (e.g. S&P 500 / Nasdaq only) |
+| Europe (incl. UK, CH)        | ~15 %          | > 35 % (home bias) | > 50 %                              |
+| Japan                        | ~5 %           | —                  | —                                   |
+| Emerging markets             | ~10 %          | > 20 %             | > 30 %                              |
+| China (incl. HK)             | ~3 %           | > 8 %              | > 15 %                              |
+| Single country other than US | —              | > 20 %             | > 35 %                              |
 
 Look-through rules when Finary gives no breakdown (always label `≈ est.`):
 
@@ -95,11 +95,11 @@ Look-through rules when Finary gives no breakdown (always label `≈ est.`):
 
 Other concentrations:
 
-| Check | 🟢 | 🟠 | 🔴 |
-| --- | --- | --- | --- |
-| Largest sector (e.g. tech) | ≤ 30 % | 30–40 % | > 40 % |
-| Currency | unhedged foreign equities are normal | — | debts or short-term money in a foreign currency |
-| Employer stock | 0–5 % | 5–10 % | > 10 % (job and savings on the same bet) |
+| Check                      | 🟢                                   | 🟠      | 🔴                                              |
+| -------------------------- | ------------------------------------ | ------- | ----------------------------------------------- |
+| Largest sector (e.g. tech) | ≤ 30 %                               | 30–40 % | > 40 %                                          |
+| Currency                   | unhedged foreign equities are normal | —       | debts or short-term money in a foreign currency |
+| Employer stock             | 0–5 %                                | 5–10 %  | > 10 % (job and savings on the same bet)        |
 
 A deliberate tilt is acceptable if the user can explain it; ask "why" first.
 
@@ -115,12 +115,12 @@ A deliberate tilt is acceptable if the user can explain it; ask "why" first.
    until retirement.
 5. **CTO** — last, for what the other envelopes cannot hold.
 
-| Check | 🟢 | 🟠 | 🔴 |
-| --- | --- | --- | --- |
-| PEA opened | yes, even small | — | no PEA while investing elsewhere |
-| CTO vs PEA | CTO only after the PEA ceiling or for non-eligible assets | CTO > PEA with PEA room left | PEA-eligible ETFs held in a CTO, PEA empty |
-| Life insurance | low fees, ETF units | euro fund only, fees ≤ 0.6 % | bank contract, fees > 0.8 % or entry fees |
-| PER | marginal tax rate ≥ 30 % | marginal tax rate 11 % | used as emergency money |
+| Check          | 🟢                                                        | 🟠                           | 🔴                                         |
+| -------------- | --------------------------------------------------------- | ---------------------------- | ------------------------------------------ |
+| PEA opened     | yes, even small                                           | —                            | no PEA while investing elsewhere           |
+| CTO vs PEA     | CTO only after the PEA ceiling or for non-eligible assets | CTO > PEA with PEA room left | PEA-eligible ETFs held in a CTO, PEA empty |
+| Life insurance | low fees, ETF units                                       | euro fund only, fees ≤ 0.6 % | bank contract, fees > 0.8 % or entry fees  |
+| PER            | marginal tax rate ≥ 30 %                                  | marginal tax rate 11 %       | used as emergency money                    |
 
 ## Outside France
 

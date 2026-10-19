@@ -9,16 +9,16 @@ social contributions on most capital income rose from 17.2 % to 18.6 %.
 
 ## Volatile facts (always check)
 
-| Fact | Official source |
-| --- | --- |
-| Flat tax (PFU) rate and its split (income tax / social contributions) | service-public.fr, impots.gouv.fr |
-| Social contributions per envelope (PEA, life insurance, CTO, real estate) | service-public.fr, impots.gouv.fr |
-| Livret A, LDDS, LEP rates and ceilings; LEP income eligibility | service-public.fr, banque-france.fr |
-| PEA / PEA-PME contribution ceilings, early-withdrawal rules | service-public.fr |
-| Life insurance allowances after 8 years | service-public.fr, impots.gouv.fr |
-| PER deduction ceilings, income tax brackets | impots.gouv.fr |
-| Index country / sector weights (MSCI, FTSE, S&P) | index provider factsheet (msci.com, ftserussell.com, spglobal.com) |
-| An ETF's fees, index, PEA eligibility | issuer's factsheet / KID (amundi, ishares, bnpparibas-am…) |
+| Fact                                                                      | Official source                                                    |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Flat tax (PFU) rate and its split (income tax / social contributions)     | service-public.fr, impots.gouv.fr                                  |
+| Social contributions per envelope (PEA, life insurance, CTO, real estate) | service-public.fr, impots.gouv.fr                                  |
+| Livret A, LDDS, LEP rates and ceilings; LEP income eligibility            | service-public.fr, banque-france.fr                                |
+| PEA / PEA-PME contribution ceilings, early-withdrawal rules               | service-public.fr                                                  |
+| Life insurance allowances after 8 years                                   | service-public.fr, impots.gouv.fr                                  |
+| PER deduction ceilings, income tax brackets                               | impots.gouv.fr                                                     |
+| Index country / sector weights (MSCI, FTSE, S&P)                          | index provider factsheet (msci.com, ftserussell.com, spglobal.com) |
+| An ETF's fees, index, PEA eligibility                                     | issuer's factsheet / KID (amundi, ishares, bnpparibas-am…)         |
 
 Stable principles need no check (PEA tax advantage after 5 years, life
 insurance after 8 years, diversification, compound interest).

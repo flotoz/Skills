@@ -5,7 +5,11 @@
     "currency": "EUR",
     "net_worth": 100000,
     "debts": 0,
-    "breakdown": { "checking_accounts": 3000, "savings_accounts": 27000, "investments": 70000 }
+    "breakdown": {
+      "checking_accounts": 3000,
+      "savings_accounts": 27000,
+      "investments": 70000
+    }
   },
   "accounts": [
     { "name": "Compte courant", "type": "checking", "balance": 3000 },
@@ -15,10 +19,34 @@
     { "name": "CTO", "type": "cto", "balance": 10000 }
   ],
   "holdings": [
-    { "account": "PEA", "name": "Amundi PEA S&P 500 UCITS ETF", "isin": "FR0011871128", "value": 40000, "ter": 0.15 },
-    { "account": "PEA", "name": "Amundi PEA Nasdaq-100 UCITS ETF", "isin": "FR0011871110", "value": 20000, "ter": 0.3 },
-    { "account": "CTO", "name": "iShares MSCI China UCITS ETF", "isin": "IE00BJ5JPG56", "value": 10000, "ter": 0.28 }
+    {
+      "account": "PEA",
+      "name": "Amundi PEA S&P 500 UCITS ETF",
+      "isin": "FR0011871128",
+      "value": 40000,
+      "ter": 0.15
+    },
+    {
+      "account": "PEA",
+      "name": "Amundi PEA Nasdaq-100 UCITS ETF",
+      "isin": "FR0011871110",
+      "value": 20000,
+      "ter": 0.3
+    },
+    {
+      "account": "CTO",
+      "name": "iShares MSCI China UCITS ETF",
+      "isin": "IE00BJ5JPG56",
+      "value": 10000,
+      "ter": 0.28
+    }
   ],
-  "get_budget_overview": { "currency": "EUR", "monthly_income": 4200, "monthly_spending": 2700, "savings_rate": 0.36, "automatic_transfers": [{ "to": "PEA", "monthly": 800 }] },
+  "get_budget_overview": {
+    "currency": "EUR",
+    "monthly_income": 4200,
+    "monthly_spending": 2700,
+    "savings_rate": 0.36,
+    "automatic_transfers": [{ "to": "PEA", "monthly": 800 }]
+  },
   "goals": [{ "name": "Retraite", "target_year": 2056 }]
 }

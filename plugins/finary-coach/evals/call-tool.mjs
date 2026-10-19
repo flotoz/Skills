@@ -10,7 +10,9 @@ import { fileURLToPath } from "node:url";
 
 const [fixture, tool, rawArgs = "{}"] = process.argv.slice(2);
 if (!fixture || !tool) {
-  console.error("Usage: node call-tool.mjs <fixture.json> <tool> [json-arguments]");
+  console.error(
+    "Usage: node call-tool.mjs <fixture.json> <tool> [json-arguments]",
+  );
   process.exit(1);
 }
 
@@ -24,11 +26,23 @@ server.stdout.on("data", (chunk) => {
   for (const line of buffer.split("\n").slice(0, -1)) {
     const message = JSON.parse(line);
     if (message.id !== 2) continue;
-    console.log(message.result?.content?.[0]?.text ?? JSON.stringify(message.error));
+    console.log(
+      message.result?.content?.[0]?.text ?? JSON.stringify(message.error),
+    );
     server.kill();
   }
   buffer = buffer.slice(buffer.lastIndexOf("\n") + 1);
 });
 const send = (message) => server.stdin.write(JSON.stringify(message) + "\n");
-send({ jsonrpc: "2.0", id: 1, method: "initialize", params: { protocolVersion: "2025-06-18" } });
-send({ jsonrpc: "2.0", id: 2, method: "tools/call", params: { name: tool, arguments: JSON.parse(rawArgs) } });
+send({
+  jsonrpc: "2.0",
+  id: 1,
+  method: "initialize",
+  params: { protocolVersion: "2025-06-18" },
+});
+send({
+  jsonrpc: "2.0",
+  id: 2,
+  method: "tools/call",
+  params: { name: tool, arguments: JSON.parse(rawArgs) },
+});

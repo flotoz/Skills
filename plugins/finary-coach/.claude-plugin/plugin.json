@@ -10,5 +10,14 @@
   "homepage": "https://github.com/flotoz/Skills",
   "repository": "https://github.com/flotoz/Skills",
   "license": "MIT",
-  "keywords": ["finary", "coach", "budget", "wealth", "personal-finance", "etf", "pea", "mcp"]
+  "keywords": [
+    "finary",
+    "coach",
+    "budget",
+    "wealth",
+    "personal-finance",
+    "etf",
+    "pea",
+    "mcp"
+  ]
 }

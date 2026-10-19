@@ -1,6 +1,6 @@
 # Test Cases for coach-my-finances
 
-Cases 3–5b have fixtures in [../../evals/](../../evals/) (mock Finary MCP server, run with `run-evals.sh`).
+Cases 1–5b run against the mock Finary MCP in [fixtures/](fixtures/) — see [README.md](README.md).
 
 ## Case 1: Finary MCP not connected
 
