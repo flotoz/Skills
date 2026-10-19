@@ -55,14 +55,15 @@ Breaking change (renamed skill, removed plugin): add `!` after the type and a
 
 ## Commands
 
-| Command                  | What it does                                                                                                                                                         |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run verify:rules`   | Repository rules ([check-repo.mjs](scripts/check-repo.mjs)) + skill structure ([validate_skill.js](.agents/skills/create-or-update-skill/scripts/validate_skill.js)) |
-| `npm run verify:docs`    | markdownlint + Prettier check                                                                                                                                        |
-| `npm run fix:docs`       | Fix formatting                                                                                                                                                       |
-| `npm run verify:plugins` | Official `claude plugin validate` on the marketplace and each plugin (local CLI from devDependencies)                                                                |
-| `npm run verify`         | Everything CI runs                                                                                                                                                   |
-| `npm run build:skills`   | Compiles `dist/<plugin>/<skill>.zip` (claude.ai bundles)                                                                                                             |
+| Command                                      | What it does                                                                                                                                                         |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run verify:rules`                       | Repository rules ([check-repo.mjs](scripts/check-repo.mjs)) + skill structure ([validate_skill.js](.agents/skills/create-or-update-skill/scripts/validate_skill.js)) |
+| `npm run verify:docs`                        | markdownlint + Prettier check                                                                                                                                        |
+| `npm run fix:docs`                           | Fix formatting                                                                                                                                                       |
+| `npm run verify:plugins`                     | Official `claude plugin validate` on the marketplace and each plugin (local CLI from devDependencies)                                                                |
+| `npm run verify`                             | Everything CI runs                                                                                                                                                   |
+| `node scripts/release-plugins.mjs --dry-run` | Prints the releases the next merge to `main` would publish                                                                                                           |
+| `npm run build:skills`                       | Compiles `dist/<plugin>/<skill>.zip` (claude.ai bundles)                                                                                                             |
 
 ## Rules enforced by `npm run verify:rules`
 
@@ -82,7 +83,8 @@ How to write a skill: [docs/skill-authoring-guide.md](docs/skill-authoring-guide
 1. Branch from `main` (`feat/<skill>`, `fix/<topic>`, `docs/<topic>`).
 2. `npm run verify` and `npm run build:skills` pass.
 3. Run the plugin's evals when behaviour changes (see its `evals/README.md`).
-4. Squash-merge with a Conventional Commit title.
+4. Squash-merge with a Conventional Commit title: its type sets the version
+   bump of every plugin whose skills the PR changes.
 
 ## Releases
 
@@ -94,5 +96,7 @@ with no release PR (`!` → major, `feat` → minor, anything else → patch). I
 commits the new `plugin.json` version and `CHANGELOG.md` to `main`, tags
 `<plugin>-v<version>`, publishes the GitHub Release and attaches the skill zips
 built by `npm run build:skills`. A plugin whose current version has no tag yet
-is released at that version. `node scripts/release-plugins.mjs --dry-run`
-prints what the next run would publish.
+is released at that version. A change only outside `skills/` (README,
+`plugin.json` metadata, `.mcp.json`, installers) publishes no release.
+`node scripts/release-plugins.mjs --dry-run` prints what the next run would
+publish.

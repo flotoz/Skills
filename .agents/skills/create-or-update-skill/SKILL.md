@@ -128,7 +128,8 @@ print.
   `LICENSE` (MIT), `install.sh` and `install.ps1`. No release config: the
   merge to `main` releases it at its `plugin.json` version.
 - A row in the README catalog, and a usage example under `## Use`.
-- Details: the `create-skill` skill's `registration-and-release.md` in
+- Details: `registration-and-release.md` of the `create-skill` skill and
+  `plugin-files.md` of the `create-or-update-plugin` skill, both in
   `plugins/skill-factory/`.
 
 ## 6. Verify

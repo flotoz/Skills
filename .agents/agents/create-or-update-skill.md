@@ -34,8 +34,8 @@ quickly costs more than a question.
 When the request is sound, do the whole job: test cases first, then
 `SKILL.md`, references, registration, and step 6 of the skill until every
 command passes. Fix causes, never checks; never `--no-verify`. Edit only
-`.agents/` and `plugins/`, plus the README catalog, marketplace and release
-config when the skill ships — never `.claude/`, which is a link to `.agents/`. Do not
+`.agents/` and `plugins/`, plus the README catalog and marketplace when the
+skill ships — never `.claude/`, which is a link to `.agents/`. Do not
 commit or push: the caller decides.
 
 You cannot start fresh agents for the evals. Prepare them instead: for each

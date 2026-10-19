@@ -135,7 +135,11 @@ merge to main ─▶ every plugin whose skills/ changed is released at once
                   + dist/<plugin>/<skill>.zip attached (claude.ai bundle)
 ```
 
-Build the bundles locally with `npm run build:skills`.
+A change only outside `skills/` publishes no release. Each plugin keeps its
+history in `plugins/<plugin>/CHANGELOG.md`; every version is on the
+[releases page](https://github.com/flotoz/Skills/releases). Build the bundles
+locally with `npm run build:skills`, preview the next release with
+`node scripts/release-plugins.mjs --dry-run`.
 
 ## Repository structure
 
@@ -151,21 +155,25 @@ Build the bundles locally with `npm run build:skills`.
 │   │   ├── .claude-plugin/plugin.json  # name, version (bumped by releases)
 │   │   ├── .mcp.json                   # Finary MCP server
 │   │   ├── README.md, LICENSE          # plugin doc, MIT license
+│   │   ├── CHANGELOG.md                # written by releases, never by hand
 │   │   ├── install.sh / install.ps1    # installs this plugin only
 │   │   ├── skills/coach-my-finances/   # installed: SKILL.md, references/
 │   │   └── evals/                      # test cases, mock MCP, fixtures
 │   └── skill-factory/
 │       ├── .claude-plugin/plugin.json
-│       ├── README.md, LICENSE, install.sh, install.ps1
+│       ├── README.md, LICENSE, CHANGELOG.md, install.sh, install.ps1
 │       ├── skills/create-skill/        # installed: SKILL.md, references/, assets/
 │       ├── skills/create-or-update-plugin/  # installed: SKILL.md, references/, assets/
 │       └── evals/
 ├── scripts/
+│   ├── onboard.mjs                     # first setup (npm run onboard)
 │   ├── check-repo.mjs                  # repository rules (npm run verify:rules)
+│   ├── validate-plugins.mjs            # claude plugin validate (npm run verify:plugins)
 │   ├── link-agents.mjs                 # links .claude → .agents (npm run setup)
 │   ├── build-skills.mjs                # compiles dist/<plugin>/<skill>.zip
 │   └── release-plugins.mjs             # versions and publishes changed plugins
 ├── docs/skill-authoring-guide.md
+├── lefthook.yml                      # Git hooks (formatting, rules, commit messages)
 ├── install.sh / install.ps1            # installers without Node.js
 └── .github/workflows/                  # verify.yml (PRs), release.yml (main)
 ```
@@ -174,7 +182,8 @@ Build the bundles locally with `npm run build:skills`.
 
 Agents follow [AGENTS.md](AGENTS.md). See [CONTRIBUTING.md](CONTRIBUTING.md): `npm run onboard` checks Node.js, installs
 the tooling, the Git hooks (formatting, repository rules, Conventional Commits)
-and the Claude Code CLI. Add skills with `/create-skill`, or by hand following
+and the Claude Code CLI. Add skills with `/create-skill`, plugins with
+`/create-or-update-plugin`, or work by hand following
 [docs/skill-authoring-guide.md](docs/skill-authoring-guide.md).
 
 ## License
