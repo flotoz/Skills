@@ -2,14 +2,16 @@
 # Installs skills from github.com/flotoz/Skills into one or more agents.
 #
 #   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/install.sh | bash
-#   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/install.sh | bash -s -- --skill coach-my-finances --agent all
 #   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/install.sh | bash -s -- --plugin finary-coach
-#   ./install.sh --list
+#   ./install.sh --help
+#
+# With no option it installs every skill into ~/.agents/skills (Codex and the
+# agents reading .agents), plus ~/.claude/skills when Claude Code is detected.
 set -euo pipefail
 
 REPO="flotoz/Skills"
 REF="main"
-AGENTS="claude"
+AGENTS="auto"
 SKILLS=()
 PLUGINS=()
 SCOPE="global"
@@ -17,10 +19,17 @@ LIST_ONLY=0
 
 usage() {
   cat <<'EOF'
-Usage: install.sh [options]
+Usage: install.sh [advanced options]
+
+With no option, installs every skill into ~/.agents/skills, plus
+~/.claude/skills when Claude Code is detected (~/.claude or `claude` on PATH).
+
+Advanced options:
   -s, --skill NAME    Skill to install (repeatable). Default: all skills.
   -P, --plugin NAME   Install every skill of a plugin (repeatable).
-  -a, --agent NAME    claude | codex | cursor | all (comma-separated). Default: claude.
+  -a, --agent NAME    auto | agents | claude | codex | cursor | all
+                      (comma-separated). Default: auto. agents and codex both
+                      mean .agents/skills; all = agents, claude and cursor.
   -p, --project       Install into the current project instead of the home directory.
   -r, --ref REF       Git branch or tag to install from. Default: main.
   -l, --list          List available skills and exit.
@@ -87,24 +96,36 @@ target_dir() {
   if [[ "$SCOPE" == "project" ]]; then
     case "$agent" in
       claude) echo ".claude/skills" ;;
-      codex|cursor) echo ".agents/skills" ;;
+      agents|codex|cursor) echo ".agents/skills" ;;
     esac
   else
     case "$agent" in
       claude) echo "$HOME/.claude/skills" ;;
-      codex) echo "$HOME/.agents/skills" ;;
+      agents|codex) echo "$HOME/.agents/skills" ;;
       cursor) echo "$HOME/.cursor/skills" ;;
     esac
   fi
 }
 
-[[ "$AGENTS" == "all" ]] && AGENTS="claude,codex,cursor"
+# Claude Code reads only .claude/skills, so auto adds it when Claude Code is here.
+claude_detected() {
+  [[ -d "$HOME/.claude" ]] || command -v claude >/dev/null 2>&1
+}
+
+auto_agents="agents"
+if claude_detected; then auto_agents="agents,claude"; fi
+AGENTS="${AGENTS//auto/$auto_agents}"
+AGENTS="${AGENTS//all/agents,claude,cursor}"
 IFS=',' read -ra AGENT_LIST <<< "$AGENTS"
+TARGET_DIRS=()
 for agent in "${AGENT_LIST[@]}"; do
-  if [[ -z "$(target_dir "$agent")" ]]; then
-    echo "❌ Unknown agent: $agent (expected claude, codex, cursor or all)." >&2
+  target="$(target_dir "$agent")"
+  if [[ -z "$target" ]]; then
+    echo "❌ Unknown agent: $agent (expected auto, agents, claude, codex, cursor or all)." >&2
     exit 1
   fi
+  # agents and codex share a folder: copy there once.
+  [[ " ${TARGET_DIRS[*]} " =~ " $target " ]] || TARGET_DIRS+=("$target")
 done
 
 installed=0
@@ -112,8 +133,8 @@ for dir in "${SKILL_DIRS[@]}"; do
   name="$(basename "$dir")"
   plugin_dir="$(dirname "$(dirname "$dir")")"
   selected "$dir" || continue
-  for agent in "${AGENT_LIST[@]}"; do
-    dest="$(target_dir "$agent")/$name"
+  for target in "${TARGET_DIRS[@]}"; do
+    dest="$target/$name"
     mkdir -p "$(dirname "$dest")"
     rm -rf "$dest"
     cp -R "$dir" "$dest"

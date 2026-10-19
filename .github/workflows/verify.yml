@@ -57,12 +57,21 @@ jobs:
             test -f "$RUNNER_TEMP/home/.claude/skills/$(basename "$skill")/LICENSE.txt"
           done
 
-      - name: Each plugin installer installs only its own skills
+      - name: Each plugin installer installs only its own skills, into .agents by default
         run: |
           for plugin in plugins/*/; do
             home="$RUNNER_TEMP/home-$(basename "$plugin")"
             HOME="$home" bash "$plugin/install.sh"
             expected="$(ls "$plugin/skills" | sort)"
-            actual="$(ls "$home/.claude/skills" | sort)"
-            test "$expected" = "$actual"
+            test "$expected" = "$(ls "$home/.agents/skills" | sort)"
+          done
+
+      - name: The default install adds Claude Code when it is detected
+        run: |
+          home="$RUNNER_TEMP/home-claude"
+          mkdir -p "$home/.claude"
+          HOME="$home" bash install.sh
+          for skill in plugins/*/skills/*/; do
+            test -f "$home/.agents/skills/$(basename "$skill")/SKILL.md"
+            test -f "$home/.claude/skills/$(basename "$skill")/SKILL.md"
           done

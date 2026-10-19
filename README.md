@@ -57,30 +57,47 @@ Update with `npx skills update`, remove with `npx skills remove <skill>`.
 
 ### Option 3 — Install script (no Node.js)
 
+Installs every skill, no option needed. Re-run to update.
+
 macOS / Linux / Git Bash:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/install.sh | bash -s -- --skill <skill> --agent all
+curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/install.sh | bash
 ```
 
 Windows PowerShell:
 
 ```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/flotoz/Skills/main/install.ps1))) -Skill <skill> -Agent all
+irm https://raw.githubusercontent.com/flotoz/Skills/main/install.ps1 | iex
 ```
 
-Each plugin also has its own installer and doc: `plugins/<plugin>/install.sh`
-(or `install.ps1`) installs only that plugin's skills, e.g.
+It copies the skills into `~/.agents/skills`, read by Codex and the other
+agents using the `.agents` folder, and into `~/.claude/skills` when Claude
+Code is detected (`~/.claude` exists or `claude` is on the PATH). Each
+plugin also has its own installer, which installs only that plugin's skills:
 `curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/finary-coach/install.sh | bash`.
 
-Options: `--list`, `--skill <name>` / `--plugin <name>` (repeatable), `--agent claude|codex|cursor|all`,
-`--project` (current folder instead of home), `--ref <branch|tag>`. Re-run to update.
+#### Advanced options
 
-| Agent    | Global folder      | Project folder (`--project`) |
-| -------- | ------------------ | ---------------------------- |
-| `claude` | `~/.claude/skills` | `.claude/skills`             |
-| `codex`  | `~/.agents/skills` | `.agents/skills`             |
-| `cursor` | `~/.cursor/skills` | `.agents/skills`             |
+Not needed for a normal install. Pass them after `bash -s --` (or as
+PowerShell parameters); `--help` lists them.
+
+| Option                               | PowerShell           | Effect                                                |
+| ------------------------------------ | -------------------- | ----------------------------------------------------- |
+| `--skill <name>` / `--plugin <name>` | `-Skill` / `-Plugin` | Install only these skills or plugins (repeatable)     |
+| `--agent <target>` (comma-separated) | `-Agent`             | Pick the targets yourself (see below); default `auto` |
+| `--project`                          | `-Project`           | Install into the current folder instead of home       |
+| `--ref <branch or tag>`              | `-Ref`               | Install a given version, e.g. `finary-coach-v1.0.0`   |
+| `--list`                             | `-List`              | List the skills and exit                              |
+
+| `--agent`         | Global folder      | Project folder (`--project`) |
+| ----------------- | ------------------ | ---------------------------- |
+| `agents`, `codex` | `~/.agents/skills` | `.agents/skills`             |
+| `claude`          | `~/.claude/skills` | `.claude/skills`             |
+| `cursor`          | `~/.cursor/skills` | `.agents/skills`             |
+
+`auto` (the default) is `agents`, plus `claude` when Claude Code is detected;
+`all` is `agents`, `claude` and `cursor`.
 
 Options 2 and 3 install skills only, not MCP servers: connect them yourself
 (see each skill's `references/connect-*.md`).
