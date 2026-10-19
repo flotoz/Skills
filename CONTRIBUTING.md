@@ -115,3 +115,9 @@ is released at that version. A change only outside `skills/` (README,
 `plugin.json` metadata, `.mcp.json`, installers) publishes no release.
 `node scripts/release-plugins.mjs --dry-run` prints what the next run would
 publish.
+
+## Security
+
+Never commit secrets, tokens, account identifiers or real personal or
+financial data, fixtures included. Report vulnerabilities privately as
+described in [SECURITY.md](SECURITY.md), never in a public issue.

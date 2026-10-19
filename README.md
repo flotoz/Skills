@@ -131,6 +131,7 @@ locally with `npm run build:skills`, preview the next release with
 ```text
 .
 ├── AGENTS.md                         # rules for agents working here
+├── CONTRIBUTING.md, SECURITY.md      # how to contribute, how to report a vulnerability
 ├── .agents/                          # agent config, single source of truth (.claude links here)
 │   ├── skills/create-or-update-skill/   # how to write a skill + validate_skill.js
 │   ├── skills/create-or-update-plugin/  # how to create or change a plugin
@@ -166,6 +167,11 @@ and the Claude Code CLI. Agents add skills with `/create-or-update-skill` and pl
 `/create-or-update-plugin` (repository skills in `.agents/skills/`), or you
 work by hand following
 [docs/skill-authoring-guide.md](docs/skill-authoring-guide.md).
+
+## Security
+
+Report vulnerabilities privately, never in a public issue: see
+[SECURITY.md](SECURITY.md).
 
 ## License
 
