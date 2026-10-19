@@ -1,10 +1,12 @@
 ---
 name: coach-my-finances
 description: >-
-  Coaches personal finances from live Finary data (MCP): safety cushion,
+  Coaches the user's own finances from live Finary data (MCP): safety cushion,
   budget, PEA vs CTO, US/Europe/China exposure, fees, crypto and exotic assets,
-  with a passive long-term method. Use for any question on savings, net worth,
-  investments, ETFs or Finary (épargne, patrimoine, placements).
+  with a passive long-term method. Use when the user asks about their own
+  savings, net worth, investments or Finary account (mon épargne, mon
+  patrimoine, mes placements, mon portefeuille). Not for general definitions
+  such as what an ETF is.
 effort: medium
 disable-model-invocation: false
 user-invocable: true
@@ -51,7 +53,13 @@ before analysing: it holds the method, thresholds and exposure benchmarks.
 - [ ] 6. Answer + challenge questions
 ```
 
-### 1. Check the Finary MCP connection (always first)
+### 1. Check the Finary MCP connection (first, for personal questions)
+
+**General question** (what an ETF is, how a PEA works in principle; no
+personal data needed) → skip the connection check and steps 2–4. Answer
+briefly with the method and the fact-check rule, recommend no product, and end
+with the disclaimer and at most one line offering a check-up once Finary is
+connected.
 
 Find the Finary tools among the available tools. Their names end with
 `get_me`, `get_portfolio_overview`, `accounts`, `holdings`,
@@ -81,11 +89,10 @@ Pick the mode from the user's message:
   answer, then one line on the most urgent other red flag if there is one.
 
 Read `get_me` and `profiles`, then ask **only** what the data cannot tell and
-what changes the answer, in one grouped message (max 5 questions):
+what changes the answer, in one grouped message of at most 5 of these:
 
 - Whose finances, if `profiles` lists several members (whole household or
   one person)
-
 - Age, and horizon of each goal (retirement, home, children…)
 - Household and income stability (single/double income, self-employed)
 - Tax residence, if not obviously France (envelope rules are French)
