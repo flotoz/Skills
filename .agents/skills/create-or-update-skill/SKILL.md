@@ -124,15 +124,19 @@ print.
 ## 5. Register it (distributed only)
 
 - New plugin: `plugins/<plugin>/.claude-plugin/plugin.json` (name = entry
-  name) and an entry in `.claude-plugin/marketplace.json`.
+  name), an entry in `.claude-plugin/marketplace.json`, its own `README.md`,
+  `LICENSE` (MIT), `install.sh` and `install.ps1`, and an entry in
+  `release-please-config.json` and `.release-please-manifest.json`.
 - A row in the README catalog, and a usage example under `## Use`.
+- Details: the `create-skill` skill's `registration-and-release.md` in
+  `plugins/skill-factory/`.
 
 ## 6. Verify
 
 ```bash
 node .agents/skills/create-or-update-skill/scripts/validate_skill.js <skill-folder>
-npm run verify
-claude plugin validate .
+npm run verify          # includes claude plugin validate
+npm run build:skills    # shipped skills: claude.ai bundles
 ```
 
 Fix the cause of a failure, never the check. Never `--no-verify`.

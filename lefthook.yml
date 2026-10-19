@@ -1,0 +1,23 @@
+# Git hooks (https://lefthook.dev). Installed by `npm run onboard`.
+# Same checks as CI: never bypass them with --no-verify.
+
+pre-commit:
+  piped: true # format first, then check the rules on the formatted files
+  jobs:
+    - name: docs are well formatted
+      glob: "*.md"
+      run: npx prettier --write {staged_files} && npx markdownlint-cli2 --fix {staged_files}
+      stage_fixed: true
+
+    - name: code and config are well formatted
+      glob: "*.{json,yml,yaml,mjs,js}"
+      run: npx prettier --write {staged_files}
+      stage_fixed: true
+
+    - name: skills and plugins follow the repository rules
+      run: npm run --silent verify:rules
+
+commit-msg:
+  jobs:
+    - name: message follows Conventional Commits
+      run: npx --no -- commitlint --edit {1}

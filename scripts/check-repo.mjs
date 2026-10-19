@@ -25,6 +25,7 @@ const MAX_DESCRIPTION = 1024;
 // Repository rule from create-or-update-skill: SKILL.md stays short, details go to references/.
 const MAX_SKILL_LINES = 200;
 const MIN_TEST_CASES = 3;
+const PLUGIN_FILES = ["README.md", "LICENSE", "install.sh", "install.ps1"];
 
 const errors = [];
 const fail = (file, message) => {
@@ -170,6 +171,33 @@ function checkPlugin(pluginDir, entry, marketplaceFile) {
   if (skills.length === 0)
     fail(pluginDir, "plugin has no skills/<name>/SKILL.md");
 
+  // Each plugin is isolated: its own doc, MIT license and installers.
+  for (const file of PLUGIN_FILES) {
+    if (!existsSync(join(pluginDir, file)))
+      fail(pluginDir, `missing ${file} (see create-skill assets/plugin/)`);
+  }
+  if (manifest && manifest.license !== "MIT")
+    fail(manifestFile, 'license must be "MIT"');
+  const licenseFile = join(pluginDir, "LICENSE");
+  if (
+    existsSync(licenseFile) &&
+    !/^MIT License/.test(readFileSync(licenseFile, "utf8"))
+  )
+    fail(licenseFile, "must be the MIT License");
+  const pluginReadme = join(pluginDir, "README.md");
+  if (existsSync(pluginReadme)) {
+    const text = readFileSync(pluginReadme, "utf8");
+    for (const name of skills) {
+      if (!text.includes(`[${name}]`))
+        fail(pluginReadme, `skill "${name}" missing from the Skills table`);
+    }
+  }
+  for (const installer of ["install.sh", "install.ps1"]) {
+    const file = join(pluginDir, installer);
+    if (existsSync(file) && !readFileSync(file, "utf8").includes(entry.name))
+      fail(file, `must install plugin "${entry.name}"`);
+  }
+
   const testCases = join(pluginDir, "evals", "test_cases.md");
   if (!existsSync(testCases)) fail(pluginDir, "missing evals/test_cases.md");
   else {
@@ -189,6 +217,7 @@ function checkLinks(files) {
       .replace(/`[^`\n]*`/g, "");
     for (const [, target] of content.matchAll(/\]\(([^)\s]+)\)/g)) {
       if (/^(https?:|mailto:|#)/.test(target)) continue;
+      if (target.includes("{{")) continue; // template placeholder (assets/)
       const path = resolve(dirname(file), decodeURI(target.split("#")[0]));
       if (!existsSync(path)) fail(file, `broken link "${target}"`);
     }

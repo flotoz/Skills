@@ -67,8 +67,8 @@ a dated official source. The reasoning behind each rule is in the
 
 ## Prove it
 
-Nothing is done until it is verified. Run `npm run verify` and
-`claude plugin validate .`; when behaviour changes, run the evals with a fresh
+Nothing is done until it is verified. Run `npm run verify` (it includes
+`claude plugin validate`) and, for shipped skills, `npm run build:skills`; when behaviour changes, run the evals with a fresh
 agent that reads only the skill and never the expected answers. Report what you
 ran, what passed, and what you did not run and why. "Should work" is not a
 status. When a check fails, fix the cause, never the check, and never bypass
