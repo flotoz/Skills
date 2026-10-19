@@ -1,7 +1,9 @@
 # Frontmatter
 
 This repository uses exactly five keys. `npm run verify:rules` rejects any
-other key and any YAML that does not parse.
+other key and any YAML that does not parse. Repo-internal skills in
+`.agents/skills/` add a sixth, required one, `metadata:` → `internal: true`:
+`npx skills` scans `.agents/skills/` and would otherwise offer them to users.
 
 ```yaml
 ---

@@ -10,6 +10,8 @@ description: >-
 effort: medium
 disable-model-invocation: false
 user-invocable: true
+metadata:
+  internal: true
 ---
 
 # Create or Update a Plugin

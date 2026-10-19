@@ -81,7 +81,13 @@ function checkSkill(skillDir, { shipped = true } = {}) {
     );
   }
 
+  // npx skills (vercel-labs/skills) scans .agents/skills/ and lists every skill
+  // there unless it is marked metadata.internal; shipped skills must not hide.
+  const internal = frontmatter.metadata?.internal === true;
+  if (!shipped && !internal)
+    fail(file, "repo-internal skill needs `metadata: { internal: true }`");
   for (const key of Object.keys(frontmatter)) {
+    if (!shipped && key === "metadata") continue;
     if (!ALLOWED_FRONTMATTER.includes(key))
       fail(
         file,
