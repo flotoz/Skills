@@ -1,0 +1,19 @@
+{
+  "name": "illustrate-it",
+  "displayName": "Illustrate It",
+  "version": "0.1.0",
+  "description": "Turns a question about code, docs or data into one verified, accessible illustration: workflow, mechanism, anatomy, layout, exchange, lifecycle or chart, in Mermaid or SVG that reads on light and dark themes.",
+  "author": { "name": "Florian METOZ", "url": "https://github.com/flotoz" },
+  "homepage": "https://github.com/flotoz/Skills",
+  "repository": "https://github.com/flotoz/Skills",
+  "license": "MIT",
+  "keywords": [
+    "diagram",
+    "mermaid",
+    "svg",
+    "chart",
+    "architecture",
+    "documentation",
+    "accessibility"
+  ]
+}

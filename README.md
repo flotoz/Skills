@@ -8,15 +8,17 @@ as a Claude Code plugin marketplace and released as versioned bundles.
 
 ## Catalog
 
-| Skill                                                                       | Plugin                                           | What it does                                                                                                                                                                                                                         |
-| --------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [coach-my-finances](plugins/finary-coach/skills/coach-my-finances/SKILL.md) | [`finary-coach`](plugins/finary-coach/README.md) | Personal finance coach reading your Finary account through the official MCP: safety cushion, 50/30/20 budget, PEA vs CTO, US / Europe / China exposure, fees, crypto share. Tax rates and ceilings fact-checked on official sources. |
+| Skill                                                                       | Plugin                                             | What it does                                                                                                                                                                                                                         |
+| --------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [coach-my-finances](plugins/finary-coach/skills/coach-my-finances/SKILL.md) | [`finary-coach`](plugins/finary-coach/README.md)   | Personal finance coach reading your Finary account through the official MCP: safety cushion, 50/30/20 budget, PEA vs CTO, US / Europe / China exposure, fees, crypto share. Tax rates and ceilings fact-checked on official sources. |
+| [illustrate-it](plugins/illustrate-it/skills/illustrate-it/SKILL.md)        | [`illustrate-it`](plugins/illustrate-it/README.md) | One verified, accessible illustration per question: workflow, mechanism, anatomy, layout, exchange, lifecycle or chart, in Mermaid or SVG. Every box maps to real code or data; contrast linted on light and dark themes.            |
 
 ## Plugins
 
-| Plugin                                           | Latest release                                                                                                                                                               | Install or update to the latest version (any agent)                                                       |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| [`finary-coach`](plugins/finary-coach/README.md) | [![finary-coach](https://img.shields.io/github/v/release/flotoz/Skills?filter=finary-coach-v*&label=finary-coach)](https://github.com/flotoz/Skills/releases?q=finary-coach) | `curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/finary-coach/install.sh \| bash` |
+| Plugin                                             | Latest release                                                                                                                                                                   | Install or update to the latest version (any agent)                                                        |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| [`finary-coach`](plugins/finary-coach/README.md)   | [![finary-coach](https://img.shields.io/github/v/release/flotoz/Skills?filter=finary-coach-v*&label=finary-coach)](https://github.com/flotoz/Skills/releases?q=finary-coach)     | `curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/finary-coach/install.sh \| bash`  |
+| [`illustrate-it`](plugins/illustrate-it/README.md) | [![illustrate-it](https://img.shields.io/github/v/release/flotoz/Skills?filter=illustrate-it-v*&label=illustrate-it)](https://github.com/flotoz/Skills/releases?q=illustrate-it) | `curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/illustrate-it/install.sh \| bash` |
 
 `main` always carries the latest release of every plugin's skills: a merge
 that changes a skill publishes its release at once. So the commands below
@@ -126,6 +128,19 @@ diagrams, a scorecard and at most 3 actions. Connect Finary first:
 > Read-only: it cannot place orders or move money. Educational analysis, not
 > regulated investment advice.
 
+### illustrate-it
+
+```text
+/illustrate-it how does the job worker retry a failed job?
+```
+
+Asks one question only when a doubt would change the picture, reads the code,
+docs or data behind the question, picks the kind (workflow, mechanism,
+anatomy, layout, exchange, lifecycle, structure, data or chart), then answers
+with the illustration, its sources and what it could not verify. It never
+invents a box or a value, and it lints contrast and accessibility when Node.js
+is available.
+
 ## Releases
 
 Versioning is automatic from [Conventional Commits](https://www.conventionalcommits.org):
@@ -155,14 +170,15 @@ locally with `npm run build:skills`, preview the next release with
 │   └── agents/create-or-update-skill.md
 ├── .claude-plugin/marketplace.json   # plugin catalog (marketplace "flotoz-skills")
 ├── plugins/
-│   └── finary-coach/
-│       ├── .claude-plugin/plugin.json  # name, version (bumped by releases)
-│       ├── .mcp.json                   # Finary MCP server
-│       ├── README.md, LICENSE          # plugin doc, MIT license
-│       ├── CHANGELOG.md                # written by releases, never by hand
-│       ├── install.sh / install.ps1    # installs this plugin only
-│       ├── skills/coach-my-finances/   # installed: SKILL.md, references/
-│       └── evals/                      # test cases, mock MCP, fixtures
+│   ├── finary-coach/
+│   │   ├── .claude-plugin/plugin.json  # name, version (bumped by releases)
+│   │   ├── .mcp.json                   # Finary MCP server
+│   │   ├── README.md, LICENSE          # plugin doc, MIT license
+│   │   ├── CHANGELOG.md                # written by releases, never by hand
+│   │   ├── install.sh / install.ps1    # installs this plugin only
+│   │   ├── skills/coach-my-finances/   # installed: SKILL.md, references/
+│   │   └── evals/                      # test cases, mock MCP, fixtures
+│   └── illustrate-it/                  # same layout; skill ships linters in scripts/
 ├── scripts/
 │   ├── onboard.mjs                     # first setup (npm run onboard)
 │   ├── check-repo.mjs                  # repository rules (npm run verify:rules)
