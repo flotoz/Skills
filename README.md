@@ -186,6 +186,7 @@ locally with `npm run build:skills`, preview the next release with
 │   ├── validate-plugins.mjs            # claude plugin validate (npm run verify:plugins)
 │   ├── link-agents.mjs                 # links .claude → .agents (npm run setup)
 │   ├── build-skills.mjs                # compiles dist/<plugin>/<skill>.zip
+│   ├── test-installers.sh / .ps1       # installer tests (CI on Linux, macOS, Windows)
 │   └── release-plugins.mjs             # versions and publishes changed plugins
 ├── docs/skill-authoring-guide.md
 ├── lefthook.yml                      # Git hooks (formatting, rules, commit messages)

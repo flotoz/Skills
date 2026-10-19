@@ -7,6 +7,9 @@
 #
 # With no option it installs every skill into ~/.agents/skills (Codex and the
 # agents reading .agents), plus ~/.claude/skills when Claude Code is detected.
+#
+# Runs on bash 3.2 (macOS), so it avoids mapfile, associative arrays and empty
+# arrays expanded under set -u.
 set -euo pipefail
 
 REPO="flotoz/Skills"
@@ -37,7 +40,19 @@ Advanced options:
 EOF
 }
 
+# Options that take a value fail with a clear message when it is missing.
+need_value() {
+  if [[ $# -lt 2 || -z "$2" || "$2" == -* ]]; then
+    echo "❌ $1 needs a value." >&2
+    usage >&2
+    exit 1
+  fi
+}
+
 while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -s|--skill|-P|--plugin|-a|--agent|-r|--ref) need_value "$@" ;;
+  esac
   case "$1" in
     -s|--skill) SKILLS+=("$2"); shift 2 ;;
     -P|--plugin) PLUGINS+=("$2"); shift 2 ;;
@@ -50,8 +65,13 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# Use the local checkout when run from inside the repository, otherwise download it.
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || true)"
+# Use the local checkout when this file is run from inside the repository,
+# otherwise download it. A piped script (curl | bash) has no file of its own,
+# so it always downloads and honours --ref, whatever the current folder.
+SCRIPT_DIR=""
+if [[ -n "${BASH_SOURCE[0]:-}" && -f "${BASH_SOURCE[0]}" ]]; then
+  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+fi
 if [[ -n "$SCRIPT_DIR" && -f "$SCRIPT_DIR/.claude-plugin/marketplace.json" ]]; then
   SRC="$SCRIPT_DIR"
 else
@@ -68,7 +88,10 @@ else
 fi
 
 # Every directory holding a SKILL.md under skills/ or plugins/*/skills/ is a skill.
-mapfile -t SKILL_DIRS < <(find "$SRC/skills" "$SRC/plugins" -mindepth 1 -name SKILL.md -not -path '*/node_modules/*' 2>/dev/null | xargs -r -n1 dirname | sort)
+SKILL_DIRS=()
+while IFS= read -r skill_md; do
+  SKILL_DIRS+=("$(dirname "$skill_md")")
+done < <(find "$SRC/skills" "$SRC/plugins" -mindepth 1 -name SKILL.md -not -path '*/node_modules/*' 2>/dev/null | sort)
 
 if [[ ${#SKILL_DIRS[@]} -eq 0 ]]; then
   echo "❌ No skills found in $SRC." >&2
@@ -125,7 +148,7 @@ for agent in "${AGENT_LIST[@]}"; do
     exit 1
   fi
   # agents and codex share a folder: copy there once.
-  [[ " ${TARGET_DIRS[*]} " =~ " $target " ]] || TARGET_DIRS+=("$target")
+  [[ " ${TARGET_DIRS[*]:-} " =~ " $target " ]] || TARGET_DIRS+=("$target")
 done
 
 installed=0
@@ -153,7 +176,7 @@ for dir in "${SKILL_DIRS[@]}"; do
 done
 
 if [[ $installed -eq 0 ]]; then
-  echo "❌ No skill matches ${SKILLS[*]} ${PLUGINS[*]}. Run with --list." >&2
+  echo "❌ No skill matches ${SKILLS[*]:-} ${PLUGINS[*]:-}. Run with --list." >&2
   exit 1
 fi
 echo "🎉 Installed $installed skill(s). Restart your agent to load them."

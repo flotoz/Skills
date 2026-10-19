@@ -10,7 +10,11 @@
 set -euo pipefail
 
 PLUGIN="illustrate-it"
-HERE="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || true)"
+# A piped script (curl | bash) has no file of its own: always download then.
+HERE=""
+if [[ -n "${BASH_SOURCE[0]:-}" && -f "${BASH_SOURCE[0]}" ]]; then
+  HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+fi
 
 if [[ -n "$HERE" && -f "$HERE/../../install.sh" ]]; then
   exec bash "$HERE/../../install.sh" --plugin "$PLUGIN" "$@"
