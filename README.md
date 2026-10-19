@@ -8,11 +8,20 @@ as a Claude Code plugin marketplace and released as versioned bundles.
 
 ## Catalog
 
-| Skill                                                                                    | Plugin                                             | What it does                                                                                                                                                                                                                         |
-| ---------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [coach-my-finances](plugins/finary-coach/skills/coach-my-finances/SKILL.md)              | [`finary-coach`](plugins/finary-coach/README.md)   | Personal finance coach reading your Finary account through the official MCP: safety cushion, 50/30/20 budget, PEA vs CTO, US / Europe / China exposure, fees, crypto share. Tax rates and ceilings fact-checked on official sources. |
-| [create-skill](plugins/skill-factory/skills/create-skill/SKILL.md)                       | [`skill-factory`](plugins/skill-factory/README.md) | Creates or updates a skill end to end: intent interview, SKILL.md with this repo's rules, evals run by fresh subagents, registration in the marketplace and the build, release.                                                      |
-| [create-or-update-plugin](plugins/skill-factory/skills/create-or-update-plugin/SKILL.md) | [`skill-factory`](plugins/skill-factory/README.md) | Creates, updates, renames or removes a plugin: plugin.json, marketplace entry, README, license, installers and MCP servers kept in sync, breaking changes flagged before editing.                                                    |
+| Skill                                                                       | Plugin                                           | What it does                                                                                                                                                                                                                         |
+| --------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [coach-my-finances](plugins/finary-coach/skills/coach-my-finances/SKILL.md) | [`finary-coach`](plugins/finary-coach/README.md) | Personal finance coach reading your Finary account through the official MCP: safety cushion, 50/30/20 budget, PEA vs CTO, US / Europe / China exposure, fees, crypto share. Tax rates and ceilings fact-checked on official sources. |
+
+## Plugins
+
+| Plugin                                           | Latest release                                                                                                                                                               | Install or update to the latest version (any agent)                                                       |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| [`finary-coach`](plugins/finary-coach/README.md) | [![finary-coach](https://img.shields.io/github/v/release/flotoz/Skills?filter=finary-coach-v*&label=finary-coach)](https://github.com/flotoz/Skills/releases?q=finary-coach) | `curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/finary-coach/install.sh \| bash` |
+
+`main` always carries the latest release of every plugin's skills: a merge
+that changes a skill publishes its release at once. So the commands below
+install the latest version, and re-running them updates it. To pin a version,
+pass the release tag: `--ref finary-coach-v1.0.0` to the install scripts.
 
 ## Install
 
@@ -100,30 +109,6 @@ diagrams, a scorecard and at most 3 actions. Connect Finary first:
 > Read-only: it cannot place orders or move money. Educational analysis, not
 > regulated investment advice.
 
-### create-skill
-
-Run it inside a clone of this repository:
-
-```text
-/create-skill a skill that summarises a GitHub PR in 5 lines for non-developers
-```
-
-It interviews you, researches with subagents, writes test cases first, drafts
-the skill, evaluates it with fresh subagents, registers it (marketplace,
-catalog) and opens the PR.
-
-### create-or-update-plugin
-
-Run it inside a clone of this repository:
-
-```text
-/create-or-update-plugin a pr-tools plugin for my GitHub skills
-```
-
-It scaffolds or updates the plugin files, keeps the marketplace and catalog in
-sync, warns before a breaking rename or removal, and hands each new skill to
-`create-skill`.
-
 ## Releases
 
 Versioning is automatic from [Conventional Commits](https://www.conventionalcommits.org):
@@ -147,24 +132,19 @@ locally with `npm run build:skills`, preview the next release with
 .
 ├── AGENTS.md                         # rules for agents working here
 ├── .agents/                          # agent config, single source of truth (.claude links here)
-│   ├── skills/create-or-update-skill/  # repo skill rules + validate_skill.js
+│   ├── skills/create-or-update-skill/   # how to write a skill + validate_skill.js
+│   ├── skills/create-or-update-plugin/  # how to create or change a plugin
 │   └── agents/create-or-update-skill.md
 ├── .claude-plugin/marketplace.json   # plugin catalog (marketplace "flotoz-skills")
 ├── plugins/
-│   ├── finary-coach/
-│   │   ├── .claude-plugin/plugin.json  # name, version (bumped by releases)
-│   │   ├── .mcp.json                   # Finary MCP server
-│   │   ├── README.md, LICENSE          # plugin doc, MIT license
-│   │   ├── CHANGELOG.md                # written by releases, never by hand
-│   │   ├── install.sh / install.ps1    # installs this plugin only
-│   │   ├── skills/coach-my-finances/   # installed: SKILL.md, references/
-│   │   └── evals/                      # test cases, mock MCP, fixtures
-│   └── skill-factory/
-│       ├── .claude-plugin/plugin.json
-│       ├── README.md, LICENSE, CHANGELOG.md, install.sh, install.ps1
-│       ├── skills/create-skill/        # installed: SKILL.md, references/, assets/
-│       ├── skills/create-or-update-plugin/  # installed: SKILL.md, references/, assets/
-│       └── evals/
+│   └── finary-coach/
+│       ├── .claude-plugin/plugin.json  # name, version (bumped by releases)
+│       ├── .mcp.json                   # Finary MCP server
+│       ├── README.md, LICENSE          # plugin doc, MIT license
+│       ├── CHANGELOG.md                # written by releases, never by hand
+│       ├── install.sh / install.ps1    # installs this plugin only
+│       ├── skills/coach-my-finances/   # installed: SKILL.md, references/
+│       └── evals/                      # test cases, mock MCP, fixtures
 ├── scripts/
 │   ├── onboard.mjs                     # first setup (npm run onboard)
 │   ├── check-repo.mjs                  # repository rules (npm run verify:rules)
@@ -182,8 +162,9 @@ locally with `npm run build:skills`, preview the next release with
 
 Agents follow [AGENTS.md](AGENTS.md). See [CONTRIBUTING.md](CONTRIBUTING.md): `npm run onboard` checks Node.js, installs
 the tooling, the Git hooks (formatting, repository rules, Conventional Commits)
-and the Claude Code CLI. Add skills with `/create-skill`, plugins with
-`/create-or-update-plugin`, or work by hand following
+and the Claude Code CLI. Agents add skills with `/create-or-update-skill` and plugins with
+`/create-or-update-plugin` (repository skills in `.agents/skills/`), or you
+work by hand following
 [docs/skill-authoring-guide.md](docs/skill-authoring-guide.md).
 
 ## License

@@ -57,7 +57,9 @@ evals live next to them in `plugins/<plugin>/evals/`.
 Use the [create-or-update-skill](.agents/skills/create-or-update-skill/SKILL.md)
 skill for every skill you create, rename, change or review, or delegate to the
 [subagent of the same name](.agents/agents/create-or-update-skill.md) to keep
-the work out of the main context. The short version: English only, an
+the work out of the main context. Use
+[create-or-update-plugin](.agents/skills/create-or-update-plugin/SKILL.md) for
+every plugin you create, change, rename or remove. The short version: English only, an
 imperative verb-plus-object name, a description that is the trigger and says
 "Use when" with the words users really type, a `SKILL.md` under 200 lines with
 the details pushed to `references/`, an invocation mode chosen on purpose and

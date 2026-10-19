@@ -67,13 +67,15 @@ every placeholder: `{{PLUGIN}}`, `{{SKILL}}`, `{{DISPLAY_NAME}}`, `{{YEAR}}`,
 
 ## 5. Skill and evals
 
-Hand over to `create-skill` for `plugins/<plugin>/skills/<skill>/` and
+Hand over to `create-or-update-skill` for `plugins/<plugin>/skills/<skill>/` and
 `plugins/<plugin>/evals/test_cases.md` (at least 3 cases). It also adds the
 root README catalog row and the `## Use` example.
 
 ## 6. Root README
 
-Add the plugin folder to the "Repository structure" tree. Add it to the install
+Add a row to the `## Plugins` table (latest-release badge filtered on
+`<plugin>-v*`, install command) and the plugin folder to the "Repository
+structure" tree. Add it to the install
 examples only if they list plugins by name; the catalog row comes with the
 skill.
 

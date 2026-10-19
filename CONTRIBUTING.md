@@ -78,6 +78,21 @@ Breaking change (renamed skill, removed plugin): add `!` after the type and a
 
 How to write a skill: [docs/skill-authoring-guide.md](docs/skill-authoring-guide.md).
 
+## Skills and plugins
+
+Agents working here use two repository skills from `.agents/skills/`, never
+shipped to users:
+
+- [create-or-update-skill](.agents/skills/create-or-update-skill/SKILL.md) for
+  every skill created, renamed, changed or reviewed;
+- [create-or-update-plugin](.agents/skills/create-or-update-plugin/SKILL.md)
+  for every plugin created, changed, renamed or removed (marketplace entry,
+  README catalog and `## Plugins` table, installers).
+
+A plugin is the unit users install and the unit that gets released. Renaming
+or removing one is a breaking change: `!` after the type and a
+`BREAKING CHANGE:` footer saying what users must do.
+
 ## Pull requests
 
 1. Branch from `main` (`feat/<skill>`, `fix/<topic>`, `docs/<topic>`).

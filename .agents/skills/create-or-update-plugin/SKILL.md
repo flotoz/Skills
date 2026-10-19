@@ -18,22 +18,18 @@ A plugin is the unit users install (`claude plugin install <plugin>@flotoz-skill
 `plugins/<plugin>/install.sh`) and the unit that gets released
 (`<plugin>-v<version>`). Its name is a public contract; its files must stay in
 sync across the marketplace, the catalog and its own folder. This skill keeps
-them in sync. Writing the skills inside a plugin is the `create-skill` skill's
-job.
+them in sync. Writing the skills inside a plugin is the job of
+[create-or-update-skill](../create-or-update-skill/SKILL.md).
 
 Answer the user in their language; write every repository file in English.
 
 ## Hard rules
 
-- **Work only in a checkout of flotoz/Skills or a fork.** If
-  `.claude-plugin/marketplace.json` is missing, say so, give
-  `git clone https://github.com/flotoz/Skills.git`, and stop without creating
-  files.
 - **Never edit `version` or `CHANGELOG.md`.** The release workflow bumps them
   from Conventional Commits on merge to `main`. A new plugin starts at `0.1.0`.
 - **No plugin without a skill.** `npm run verify` rejects a plugin with no
   `skills/<name>/SKILL.md` or fewer than 3 test cases: a new plugin is created
-  together with its first skill, written with `create-skill`.
+  together with its first skill, written with `create-or-update-skill`.
 - **Renaming or removing is breaking.** Explain what breaks and offer the
   non-breaking option before editing (see the table below).
 - **An MCP server is a trust decision.** Add only an official server of the
@@ -66,15 +62,15 @@ tags, MCP servers, first skill. Wait for a yes.
 
 ### 3. Edit
 
-| Change                     | Files                                                                                                                                                                                                                      | Breaking                                                      |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| New plugin                 | [references/plugin-files.md](references/plugin-files.md), then `create-skill` for its first skill                                                                                                                          | no                                                            |
-| Description, keywords/tags | `plugin.json` (`description`, `keywords`) and the marketplace entry (`description`, `tags`), plugin README intro                                                                                                           | no                                                            |
-| Display name               | `plugin.json` `displayName`, plugin README title                                                                                                                                                                           | no                                                            |
-| MCP server                 | `plugins/<plugin>/.mcp.json`, plugin README Prerequisites, the skill's `references/connect-<service>.md`                                                                                                                   | no                                                            |
-| Move a skill in            | `git mv` the skill folder and its test cases, both plugin READMEs, the catalog row's Plugin column                                                                                                                         | yes for the plugin it leaves                                  |
-| Rename                     | folder, `plugin.json` `name`, marketplace entry, installers (`PLUGIN=`), plugin README, root README catalog, install examples and tree, every `plugins/<old>/` path, MCP tool prefixes `mcp__plugin_<old>_…` in its skills | yes: install id, installer URLs, release tags, MCP tool names |
-| Remove                     | folder, marketplace entry, catalog rows, README `## Use` sections and install examples                                                                                                                                     | yes: users can no longer install or update it                 |
+| Change                     | Files                                                                                                                                                                                                                                        | Breaking                                                      |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| New plugin                 | [references/plugin-files.md](references/plugin-files.md), then `create-or-update-skill` for its first skill                                                                                                                                  | no                                                            |
+| Description, keywords/tags | `plugin.json` (`description`, `keywords`) and the marketplace entry (`description`, `tags`), plugin README intro                                                                                                                             | no                                                            |
+| Display name               | `plugin.json` `displayName`, plugin README title                                                                                                                                                                                             | no                                                            |
+| MCP server                 | `plugins/<plugin>/.mcp.json`, plugin README Prerequisites, the skill's `references/connect-<service>.md`                                                                                                                                     | no                                                            |
+| Move a skill in            | `git mv` the skill folder and its test cases, both plugin READMEs, the catalog row's Plugin column                                                                                                                                           | yes for the plugin it leaves                                  |
+| Rename                     | folder, `plugin.json` `name`, marketplace entry, installers (`PLUGIN=`), plugin README, root README catalog, `## Plugins` row, install examples and tree, every `plugins/<old>/` path, MCP tool prefixes `mcp__plugin_<old>_…` in its skills | yes: install id, installer URLs, release tags, MCP tool names |
+| Remove                     | folder, marketplace entry, catalog rows, `## Plugins` row, README `## Use` sections and install examples                                                                                                                                     | yes: users can no longer install or update it                 |
 
 Before a breaking change, list what breaks for users who installed the plugin
 and propose the alternative (change `displayName` instead of renaming; keep

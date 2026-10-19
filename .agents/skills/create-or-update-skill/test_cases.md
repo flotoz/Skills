@@ -66,3 +66,23 @@ first`, and no `user-invocable` key.
 
 - `npm run verify:rules` fails on invalid YAML and on the missing invocation
   field; the fix uses `description: >-` and writes both booleans out.
+
+## Case 7: Turn the conversation into a skill
+
+**Input**: after a conversation where the user corrected the agent twice,
+"Transforme ce qu'on vient de faire en skill."
+**Expected Output**:
+
+- Extracts steps, tools and the two corrections from the conversation instead
+  of re-asking them.
+- The corrections become hard rules or workflow steps with their reason.
+
+## Case 8: Update with a frontmatter trap
+
+**Input**: "Ajoute 'Use for: budgets, PEA' à la description de
+coach-my-finances."
+**Expected Output**:
+
+- Keeps the folded `>-` block so the `:` does not break YAML.
+- Snapshots the old version and re-runs the plugin's evals against it.
+- Commits `feat(coach-my-finances): …` without `--no-verify`.
