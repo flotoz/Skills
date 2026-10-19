@@ -2,9 +2,11 @@
 name: create-or-update-skill
 description: >-
   Creates or updates an agent skill in this repository to Anthropic quality
-  standards: challenges the request, writes test cases first, keeps SKILL.md
-  short, registers and verifies it. Use whenever a skill is created, renamed,
-  changed or reviewed.
+  standards: captures the intent, challenges the request, writes test cases
+  first, keeps SKILL.md short, registers, verifies and evaluates it with fresh
+  agents. Use whenever a skill is created, renamed, changed, tested or
+  reviewed, or a workflow should become a skill, even if the user does not say
+  "skill".
 effort: medium
 disable-model-invocation: false
 user-invocable: true
@@ -32,6 +34,17 @@ Everything below serves that test.
 - **Never edit under `.claude/`**: it is a link to `.agents/`.
 - **Done means verified**: every command in step 6 passed, and you say which
   ones you ran.
+
+## 0. Capture the intent
+
+If the conversation already holds the workflow ("turn this into a skill"),
+extract its steps, tools, corrections and output formats first. Then ask only
+what is missing, in one message: the job and what "done" looks like, the words
+users type (in which languages), external services, side effects, and the
+plugin it joins. Restate the intent in 2–3 lines and get a yes. For a new
+skill touching tools or APIs, research their official docs (in parallel
+subagents when available), starting from
+[references/external-docs.md](references/external-docs.md).
 
 ## 1. Decide where it lives
 
@@ -65,10 +78,17 @@ and **Expected Output**:
    missing and how to fix it, never fails silently.
 3. A request the skill must refuse, challenge or narrow.
 
+Template: [assets/test_cases.template.md](assets/test_cases.template.md).
 Mock external services so evals run without real accounts (see
 `plugins/finary-coach/evals/`). Fixtures are synthetic: no real personal data.
 
 ## 4. Write `SKILL.md`
+
+Start from [assets/SKILL.template.md](assets/SKILL.template.md). Details:
+[references/frontmatter.md](references/frontmatter.md) (keys, modes, YAML
+traps, claude.ai build) and
+[references/writing-guide.md](references/writing-guide.md) (structure,
+progressive disclosure, review checklist).
 
 Frontmatter — these five keys, nothing else, booleans written out:
 
@@ -123,13 +143,12 @@ print.
 
 ## 5. Register it (distributed only)
 
-- New plugin: `plugins/<plugin>/.claude-plugin/plugin.json` (name = entry
-  name), an entry in `.claude-plugin/marketplace.json`, its own `README.md`,
-  `LICENSE` (MIT), `install.sh` and `install.ps1`. No release config: the
-  merge to `main` releases it at its `plugin.json` version.
-- A row in the README catalog, and a usage example under `## Use`.
-- Details: the `create-skill` skill's `registration-and-release.md` in
-  `plugins/skill-factory/`.
+- New plugin: use [create-or-update-plugin](../create-or-update-plugin/SKILL.md)
+  first (plugin.json, marketplace entry, README, LICENSE, installers).
+- A row in the README catalog and the plugin README, and a usage example
+  under `## Use`.
+- Details and release effect:
+  [references/registration-and-release.md](references/registration-and-release.md).
 
 ## 6. Verify
 
@@ -147,13 +166,21 @@ For each test case, start a **fresh agent** that gets only the skill and the
 case input — never the expected output — and grade its answer against the
 case. Fix the skill, re-run the failing cases. A behaviour change without a
 re-run eval is not done. If you cannot start agents, say so and hand the cases
-to the caller.
+to the caller. Baseline runs, grading and iteration:
+[references/evals-with-subagents.md](references/evals-with-subagents.md).
 
 ## Updating a skill
 
-Read the whole skill and its test cases first. Add a case that fails today,
-make it pass, re-run the others: an update must not regress a case. Keep the
-name and the trigger words users already rely on.
+Read the whole skill and its test cases first, and snapshot it so a baseline
+agent can run the old version. Add a case that fails today, make it pass,
+re-run the others: an update must not regress a case. Keep the name and the
+trigger words users already rely on. Size the re-run to the change:
+
+| Change                           | Re-run                                                |
+| -------------------------------- | ----------------------------------------------------- |
+| Description or wording only      | 2–3 prompts that should trigger it, 1 that should not |
+| One workflow step or rule        | the cases touching it + 1 unrelated case as a guard   |
+| Workflow, tools or output format | every case, with baseline                             |
 
 ## Report
 

@@ -93,6 +93,7 @@ ok("rules, docs and plugin manifests pass");
 console.log(`
 🎉 Ready. Next:
    - create a branch: git switch -c feat/<skill>
-   - add a skill with /create-skill (skill-factory plugin) or see docs/skill-authoring-guide.md
+   - add a skill with /create-or-update-skill, a plugin with /create-or-update-plugin,
+     or see docs/skill-authoring-guide.md
    - commit as <type>(<scope>): <summary>; the hooks check the rest
    - before a PR: npm run verify && npm run build:skills`);

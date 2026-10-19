@@ -1,6 +1,6 @@
 # Test Cases for <skill-name>
 
-Run them with fresh subagents — see the create-skill evals guide.
+Run them with fresh subagents — see `references/evals-with-subagents.md` of the create-or-update-skill skill.
 
 ## Case 1: Happy path
 

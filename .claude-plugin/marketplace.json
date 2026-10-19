@@ -22,13 +22,6 @@
         "pea",
         "mcp"
       ]
-    },
-    {
-      "name": "skill-factory",
-      "source": "./plugins/skill-factory",
-      "description": "Create agent skills and the plugins that ship them, test them with fresh subagents, register and release them following this repository rules.",
-      "category": "development",
-      "tags": ["skills", "authoring", "evals", "subagents", "release"]
     }
   ]
 }
