@@ -26,14 +26,28 @@
 
 ## Case 3: Agent-only background rules
 
-**Input**: "Create a skill with the criteria to rate a savings account."
+**Input**: "Create a skill with our house rules for risk disclaimers, applied
+whenever an agent writes financial text in this repository."
 
 **Expected Output**:
 
 - Frontmatter sets `disable-model-invocation: false` and
-  `user-invocable: false`.
+  `user-invocable: false`: the rules apply inside other work and have no job
+  of their own.
 - A variant with `disable-model-invocation: true` and `user-invocable: false`
   fails the validator as unreachable.
+
+## Case 3b: Criteria the user asks for directly
+
+**Input**: "Create a skill with the criteria to rate a savings account."
+
+**Expected Output**:
+
+- Mode is Auto (`false` / `true`), not Agent only: users ask for the rating
+  itself ("is this livret good?"), and hiding the `/` command would not stop
+  the trigger anyway.
+- Checks the overlap with `coach-my-finances` and keeps volatile rates out of
+  the skill.
 
 ## Case 4: Volatile facts are challenged
 

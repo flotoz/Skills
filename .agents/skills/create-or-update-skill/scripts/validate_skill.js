@@ -57,7 +57,11 @@ function descriptionOf(frontmatter) {
     .filter((line, index, rest) =>
       rest.slice(0, index + 1).every((previous) => previous.startsWith(" ")),
     );
-  return [frontmatter[start].replace(/^description:\s*/, ""), ...continuation]
+  // A folded or literal block (`description: >-`) starts with its indicator, not text.
+  const firstLine = frontmatter[start]
+    .replace(/^description:\s*/, "")
+    .replace(/^[>|][-+]?\s*$/, "");
+  return [firstLine, ...continuation]
     .map((line) => line.trim())
     .join(" ")
     .trim();

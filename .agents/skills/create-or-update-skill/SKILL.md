@@ -119,15 +119,19 @@ PEA vs CTO, fees. Use when the user asks about savings, épargne, PEA…`
 
 **Invocation mode** — choose deliberately, always both fields:
 
-| Mode       | `disable-model-invocation` | `user-invocable` | For                                                   |
-| ---------- | -------------------------- | ---------------- | ----------------------------------------------------- |
-| Auto       | `false`                    | `true`           | read-only workflows                                   |
-| Agent only | `false`                    | `false`          | background rules the agent applies (criteria, styles) |
-| Manual     | `true`                     | `true`           | side effects: publish, post, deploy, pay; costly runs |
+| Mode       | `disable-model-invocation` | `user-invocable` | For                                                            |
+| ---------- | -------------------------- | ---------------- | -------------------------------------------------------------- |
+| Auto       | `false`                    | `true`           | read-only workflows                                            |
+| Agent only | `false`                    | `false`          | rules applied inside other work (house style, review criteria) |
+| Manual     | `true`                     | `true`           | side effects: publish, post, deploy, pay; costly runs          |
 
 Manual also requires: description starting with `Manual only`, and
 `agents/openai.yaml` containing `policy:` → `allow_implicit_invocation: false`
 (Codex). `true` / `false` is unreachable and rejected.
+
+Agent only hides the `/` command, not the trigger. Pick it only when the
+skill has no job of its own; if users ask for its output directly ("rate
+this account"), it is Auto, even when its content is criteria.
 
 **Body**, in this order:
 
