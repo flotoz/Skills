@@ -4,10 +4,10 @@
 //   npm run onboard
 //
 // 1. Node.js matches .nvmrc.
-// 2. Quality tooling installed (exact versions from package-lock.json).
+// 2. Tooling installed at the exact versions of package-lock.json, Claude Code
+//    CLI included (local, no global install).
 // 3. Git hooks active (lefthook: pre-commit, commit-msg).
-// 4. Claude Code CLI available for `claude plugin validate` (pinned version).
-// 5. The repository passes its own checks.
+// 4. The repository passes its own checks, `claude plugin validate` included.
 //
 // Safe to re-run: every step checks before it changes anything.
 import { spawnSync } from "node:child_process";
@@ -16,9 +16,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8"));
 const NODE_MAJOR = readFileSync(join(ROOT, ".nvmrc"), "utf8").trim();
-const CLAUDE_CODE_VERSION = pkg.config.claudeCodeVersion;
 
 const run = (command, { quiet = false } = {}) =>
   spawnSync(command, {
@@ -35,7 +33,6 @@ const output = (command) => {
 let step = 0;
 const title = (text) => console.log(`\n${++step}. ${text}`);
 const ok = (text) => console.log(`   ✅ ${text}`);
-const warn = (text) => console.log(`   ⚠️  ${text}`);
 const stop = (text) => {
   console.error(`   ❌ ${text}`);
   process.exit(1);
@@ -53,11 +50,16 @@ if (nodeMajor !== NODE_MAJOR) {
 }
 ok(`Node.js ${process.versions.node}`);
 
-title("Quality tooling (Prettier, markdownlint, commitlint, lefthook)");
+title(
+  "Tooling (Prettier, markdownlint, commitlint, lefthook, Claude Code CLI)",
+);
 if (!existsSync(join(ROOT, ".git")))
   stop("not a Git clone: git clone https://github.com/flotoz/Skills.git");
 if (run("npm ci").status !== 0) stop("npm ci failed, see the output above.");
-ok("installed from package-lock.json");
+const claudeVersion = output("npx --no -- claude --version");
+if (!claudeVersion)
+  stop("Claude Code CLI missing from node_modules: re-run npm ci.");
+ok(`installed from package-lock.json (claude ${claudeVersion.split(" ")[0]})`);
 
 title("Git hooks");
 // --reset-hooks-path: clones set up with husky still point Git at .husky/_.
@@ -83,27 +85,9 @@ ok(
   "pre-commit (format + repository rules) and commit-msg (Conventional Commits) active",
 );
 
-title(`Claude Code CLI ${CLAUDE_CODE_VERSION} (for claude plugin validate)`);
-let claudeVersion = output("claude --version")?.match(/\d+\.\d+\.\d+/)?.[0];
-if (!claudeVersion) {
-  run(`npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}`);
-  claudeVersion = output("claude --version")?.match(/\d+\.\d+\.\d+/)?.[0];
-}
-if (!claudeVersion)
-  warn(
-    `not installed. Install it to validate plugins: npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}`,
-  );
-else if (claudeVersion !== CLAUDE_CODE_VERSION)
-  warn(
-    `found ${claudeVersion}; CI pins ${CLAUDE_CODE_VERSION}. Your install is kept.`,
-  );
-else ok(`claude ${claudeVersion}`);
-
 title("Repository checks");
 if (run("npm run --silent verify").status !== 0)
   stop("the repository does not pass its own checks, see above.");
-if (claudeVersion && run("claude plugin validate .").status !== 0)
-  stop("claude plugin validate failed, see above.");
 ok("rules, docs and plugin manifests pass");
 
 console.log(`

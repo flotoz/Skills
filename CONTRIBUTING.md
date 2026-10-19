@@ -12,10 +12,11 @@ npm run onboard
 `npm run onboard` is safe to re-run. It:
 
 1. checks Node.js against `.nvmrc`;
-2. installs the quality tooling at the exact versions of `package-lock.json`;
+2. installs the tooling at the exact versions of `package-lock.json`, Claude Code CLI included;
 3. installs the Git hooks with [lefthook](https://lefthook.dev) and proves the `commit-msg` hook rejects a bad message;
-4. installs the Claude Code CLI at the version CI pins (`config.claudeCodeVersion` in `package.json`) if it is missing; an existing install is kept;
-5. runs `npm run verify` and `claude plugin validate .`.
+4. runs `npm run verify`, including `claude plugin validate`.
+
+The Claude Code CLI is a devDependency like the rest of the tooling: `npm ci` installs the pinned version locally, nothing global.
 
 Hooks, defined in [lefthook.yml](lefthook.yml):
 
@@ -50,14 +51,14 @@ Breaking change (renamed skill, removed plugin): add `!` after the type and a
 
 ## Commands
 
-| Command                    | What it does                                                                                                                   |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `npm run verify:rules`     | Repository rules ([check-repo.mjs](scripts/check-repo.mjs)) + skill structure ([validate_skill.js](scripts/validate_skill.js)) |
-| `npm run verify:docs`      | markdownlint + Prettier check                                                                                                  |
-| `npm run fix:docs`         | Fix formatting                                                                                                                 |
-| `npm run verify`           | Everything CI runs, except `claude plugin validate`                                                                            |
-| `claude plugin validate .` | Official marketplace / plugin / frontmatter check                                                                              |
-| `npm run build:skills`     | Compiles `dist/<plugin>/<skill>.zip` (claude.ai bundles)                                                                       |
+| Command                  | What it does                                                                                                                   |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| `npm run verify:rules`   | Repository rules ([check-repo.mjs](scripts/check-repo.mjs)) + skill structure ([validate_skill.js](scripts/validate_skill.js)) |
+| `npm run verify:docs`    | markdownlint + Prettier check                                                                                                  |
+| `npm run fix:docs`       | Fix formatting                                                                                                                 |
+| `npm run verify:plugins` | Official `claude plugin validate` on the marketplace and each plugin (local CLI from devDependencies)                          |
+| `npm run verify`         | Everything CI runs                                                                                                             |
+| `npm run build:skills`   | Compiles `dist/<plugin>/<skill>.zip` (claude.ai bundles)                                                                       |
 
 ## Rules enforced by `npm run verify:rules`
 
@@ -74,7 +75,7 @@ How to write a skill: [docs/skill-authoring-guide.md](docs/skill-authoring-guide
 ## Pull requests
 
 1. Branch from `main` (`feat/<skill>`, `fix/<topic>`, `docs/<topic>`).
-2. `npm run verify`, `npm run build:skills` and `claude plugin validate .` pass.
+2. `npm run verify` and `npm run build:skills` pass.
 3. Run the plugin's evals when behaviour changes (see its `evals/README.md`).
 4. Squash-merge with a Conventional Commit title.
 

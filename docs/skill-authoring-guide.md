@@ -27,5 +27,5 @@ Its references are the single source of truth for how skills are written here
 - `plugins/<plugin>/evals/test_cases.md` with ≥ 3 cases, passed by fresh
   subagents.
 - Registered in the marketplace, the README catalog and the release config.
-- `npm run verify`, `npm run build:skills` and `claude plugin validate .` pass.
+- `npm run verify` (which runs `claude plugin validate`) and `npm run build:skills` pass.
 - Conventional Commits, hooks never bypassed.
