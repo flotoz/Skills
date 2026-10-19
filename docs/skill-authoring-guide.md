@@ -22,8 +22,9 @@ Their references are the single source of truth for how skills are written here
 | Templates                                                                 | [SKILL.template.md](../.agents/skills/create-or-update-skill/assets/SKILL.template.md), [test_cases.template.md](../.agents/skills/create-or-update-skill/assets/test_cases.template.md) |
 
 Repository-only skills (tooling for agents working here) go to
-`.agents/skills/<skill-name>/`: same frontmatter rules, not in the catalog,
-may link to the repository docs; agents use
+`.agents/skills/<skill-name>/`: same frontmatter rules plus `metadata:` →
+`internal: true` (hides them from `npx skills`), not in the catalog, may link
+to the repository docs; agents use
 [create-or-update-skill](../.agents/skills/create-or-update-skill/SKILL.md).
 
 ## Non-negotiables
