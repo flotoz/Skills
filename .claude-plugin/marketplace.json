@@ -22,6 +22,21 @@
         "pea",
         "mcp"
       ]
+    },
+    {
+      "name": "illustrate-it",
+      "source": "./plugins/illustrate-it",
+      "description": "One verified, accessible illustration per question: workflow, mechanism, anatomy, layout, exchange, lifecycle or chart, in Mermaid or SVG for light and dark themes.",
+      "category": "development",
+      "tags": [
+        "diagram",
+        "mermaid",
+        "svg",
+        "chart",
+        "architecture",
+        "documentation",
+        "accessibility"
+      ]
     }
   ]
 }
