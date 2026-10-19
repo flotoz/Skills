@@ -70,6 +70,8 @@ Skills settings.
   and `accDescr`, and runs its linters when Node.js is available.
 - Read-only: it never edits code or docs to make a picture fit, and writes the
   diagram to a file only when you ask.
+- Not for logos, icons or artwork: for those, your agent simply helps without
+  it.
 
 ## License
 
