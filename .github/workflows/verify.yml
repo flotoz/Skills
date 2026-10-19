@@ -75,3 +75,33 @@ jobs:
             test -f "$home/.agents/skills/$(basename "$skill")/SKILL.md"
             test -f "$home/.claude/skills/$(basename "$skill")/SKILL.md"
           done
+
+  installers:
+    name: Installers on ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Get the repository
+        uses: actions/checkout@v7.0.1
+
+      - name: install.sh with the default bash
+        shell: bash
+        run: bash scripts/test-installers.sh --remote
+
+      - name: install.sh with macOS /bin/bash 3.2
+        if: runner.os == 'macOS'
+        shell: bash
+        run: BASH_UNDER_TEST=/bin/bash /bin/bash scripts/test-installers.sh --remote
+
+      - name: install.ps1 with Windows PowerShell 5.1
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-installers.ps1
+
+      - name: install.ps1 with PowerShell 7
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: pwsh -NoProfile -File scripts/test-installers.ps1

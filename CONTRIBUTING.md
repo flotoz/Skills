@@ -55,15 +55,17 @@ Breaking change (renamed skill, removed plugin): add `!` after the type and a
 
 ## Commands
 
-| Command                                      | What it does                                                                                                                                                         |
-| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run verify:rules`                       | Repository rules ([check-repo.mjs](scripts/check-repo.mjs)) + skill structure ([validate_skill.js](.agents/skills/create-or-update-skill/scripts/validate_skill.js)) |
-| `npm run verify:docs`                        | markdownlint + Prettier check                                                                                                                                        |
-| `npm run fix:docs`                           | Fix formatting                                                                                                                                                       |
-| `npm run verify:plugins`                     | Official `claude plugin validate` on the marketplace and each plugin (local CLI from devDependencies)                                                                |
-| `npm run verify`                             | Everything CI runs                                                                                                                                                   |
-| `node scripts/release-plugins.mjs --dry-run` | Prints the releases the next merge to `main` would publish                                                                                                           |
-| `npm run build:skills`                       | Compiles `dist/<plugin>/<skill>.zip` (claude.ai bundles)                                                                                                             |
+| Command                                        | What it does                                                                                                                                                         |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run verify:rules`                         | Repository rules ([check-repo.mjs](scripts/check-repo.mjs)) + skill structure ([validate_skill.js](.agents/skills/create-or-update-skill/scripts/validate_skill.js)) |
+| `npm run verify:docs`                          | markdownlint + Prettier check                                                                                                                                        |
+| `npm run fix:docs`                             | Fix formatting                                                                                                                                                       |
+| `npm run verify:plugins`                       | Official `claude plugin validate` on the marketplace and each plugin (local CLI from devDependencies)                                                                |
+| `npm run verify`                               | Everything CI runs                                                                                                                                                   |
+| `node scripts/release-plugins.mjs --dry-run`   | Prints the releases the next merge to `main` would publish                                                                                                           |
+| `npm run build:skills`                         | Compiles `dist/<plugin>/<skill>.zip` (claude.ai bundles)                                                                                                             |
+| `bash scripts/test-installers.sh --remote`     | Tests `install.sh` and the plugin installers in throwaway homes; `BASH_UNDER_TEST=/bin/bash` runs them with macOS bash 3.2                                           |
+| `powershell -File scripts/test-installers.ps1` | Same for `install.ps1` (Windows PowerShell 5.1, or `pwsh` for PowerShell 7)                                                                                          |
 
 ## Rules enforced by `npm run verify:rules`
 
