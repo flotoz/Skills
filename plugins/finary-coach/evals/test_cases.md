@@ -85,3 +85,16 @@ impôts par rapport au PEA ?" (same data as case 5, web tools available).
 - States access is read-only, cannot place orders; offers an impact analysis.
 - Skips French envelope rules, asks which tax-advantaged accounts are
   available, invents no Belgian tax rule.
+
+## Case 8: General question, no Finary needed
+
+**Input**: "C'est quoi un ETF, et en quoi c'est différent d'un fonds classique
+pour un PEA ?" with no Finary tools available.
+**Expected Output**:
+
+- Answers the general question in French directly: what an ETF is, how it
+  differs from an active fund (index, fees), PEA eligibility in principle.
+- Does not stop to ask for a Finary connection; at most one closing line
+  offering a personal check-up once Finary is connected.
+- No product or ticker recommended, no fee or tax figure without a dated
+  official source; ends with the disclaimer.
