@@ -33,17 +33,21 @@ claude plugin install finary-coach@flotoz-skills
 
 Then run `/mcp`, select **finary** and authenticate in the browser.
 
-Any agent (Claude Code, Codex, Cursor), macOS / Linux / Git Bash:
+Any agent, macOS / Linux / Git Bash (installs into `~/.agents/skills`, plus
+`~/.claude/skills` when Claude Code is detected):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/finary-coach/install.sh | bash -s -- --agent all
+curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/finary-coach/install.sh | bash
 ```
 
 Windows PowerShell:
 
 ```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/flotoz/Skills/main/plugins/finary-coach/install.ps1))) -Agent all
+irm https://raw.githubusercontent.com/flotoz/Skills/main/plugins/finary-coach/install.ps1 | iex
 ```
+
+Advanced options (`--agent`, `--project`, `--ref`): see the
+[repository README](https://github.com/flotoz/Skills#advanced-options).
 
 With `npx skills`:
 

@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-# Installs the finary-coach skills into Claude Code, Codex or Cursor.
+# Installs the finary-coach skills into ~/.agents/skills, plus ~/.claude/skills
+# when Claude Code is detected.
 #
 #   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/finary-coach/install.sh | bash
-#   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/finary-coach/install.sh | bash -s -- --agent all --project
+#   curl -fsSL https://raw.githubusercontent.com/flotoz/Skills/main/plugins/finary-coach/install.sh | bash -s -- --project
 #
-# Options are forwarded to the repository installer (--agent, --project, --ref, --list).
+# Advanced options are forwarded to the repository installer (--agent,
+# --project, --ref, --list; see --help).
 set -euo pipefail
 
 PLUGIN="finary-coach"

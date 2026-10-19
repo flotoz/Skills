@@ -1,16 +1,17 @@
 <#
 .SYNOPSIS
-  Installs the {{PLUGIN}} skills into Claude Code, Codex or Cursor (Windows).
+  Installs the {{PLUGIN}} skills into ~/.agents/skills, plus ~/.claude/skills when
+  Claude Code is detected (Windows). Parameters are advanced options.
 
 .EXAMPLE
   irm https://raw.githubusercontent.com/flotoz/Skills/main/plugins/{{PLUGIN}}/install.ps1 | iex
 
 .EXAMPLE
-  & ([scriptblock]::Create((irm https://raw.githubusercontent.com/flotoz/Skills/main/plugins/{{PLUGIN}}/install.ps1))) -Agent all -Project
+  & ([scriptblock]::Create((irm https://raw.githubusercontent.com/flotoz/Skills/main/plugins/{{PLUGIN}}/install.ps1))) -Project
 #>
 param(
-  [ValidateSet('claude', 'codex', 'cursor', 'all')]
-  [string[]]$Agent = @('claude'),
+  [ValidateSet('auto', 'agents', 'claude', 'codex', 'cursor', 'all')]
+  [string[]]$Agent = @('auto'),
   [switch]$Project,
   [string]$Ref = 'main',
   [switch]$List

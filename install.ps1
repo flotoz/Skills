@@ -2,11 +2,20 @@
 .SYNOPSIS
   Installs skills from github.com/flotoz/Skills into one or more agents (Windows).
 
+.DESCRIPTION
+  With no option, installs every skill into ~/.agents/skills (Codex and the
+  agents reading .agents), plus ~/.claude/skills when Claude Code is detected
+  (~/.claude or `claude` on PATH). Every parameter is an advanced option.
+
+.PARAMETER Agent
+  auto (default), agents, claude, codex, cursor or all. agents and codex both
+  mean .agents/skills; all = agents, claude and cursor.
+
 .EXAMPLE
   irm https://raw.githubusercontent.com/flotoz/Skills/main/install.ps1 | iex
 
 .EXAMPLE
-  & ([scriptblock]::Create((irm https://raw.githubusercontent.com/flotoz/Skills/main/install.ps1))) -Skill coach-my-finances -Agent all
+  & ([scriptblock]::Create((irm https://raw.githubusercontent.com/flotoz/Skills/main/install.ps1))) -Skill coach-my-finances -Agent claude
 
 .EXAMPLE
   & ([scriptblock]::Create((irm https://raw.githubusercontent.com/flotoz/Skills/main/install.ps1))) -Plugin finary-coach
@@ -17,8 +26,8 @@
 param(
   [string[]]$Skill = @(),
   [string[]]$Plugin = @(),
-  [ValidateSet('claude', 'codex', 'cursor', 'all')]
-  [string[]]$Agent = @('claude'),
+  [ValidateSet('auto', 'agents', 'claude', 'codex', 'cursor', 'all')]
+  [string[]]$Agent = @('auto'),
   [switch]$Project,
   [string]$Ref = 'main',
   [switch]$List
@@ -61,7 +70,15 @@ try {
     return
   }
 
-  if ($Agent -contains 'all') { $Agent = @('claude', 'codex', 'cursor') }
+  # Claude Code reads only .claude/skills, so auto adds it when Claude Code is here.
+  $claudeDetected = (Test-Path (Join-Path $HOME '.claude')) -or [bool](Get-Command claude -ErrorAction SilentlyContinue)
+  $Agent = @($Agent | ForEach-Object {
+    switch ($_) {
+      'auto' { 'agents'; if ($claudeDetected) { 'claude' } }
+      'all' { 'agents', 'claude', 'cursor' }
+      default { $_ }
+    }
+  })
 
   function Get-TargetDir([string]$name) {
     if ($Project) {
@@ -69,17 +86,20 @@ try {
     } else {
       switch ($name) {
         'claude' { Join-Path $HOME '.claude/skills' }
-        'codex'  { Join-Path $HOME '.agents/skills' }
+        { $_ -in 'agents', 'codex' } { Join-Path $HOME '.agents/skills' }
         'cursor' { Join-Path $HOME '.cursor/skills' }
       }
     }
   }
 
+  # agents and codex share a folder: copy there once.
+  $targets = @($Agent | ForEach-Object { Get-TargetDir $_ } | Select-Object -Unique)
+
   $installed = 0
   foreach ($dir in $skillDirs) {
     $pluginDir = $dir.Parent.Parent
-    foreach ($a in $Agent) {
-      $dest = Join-Path (Get-TargetDir $a) $dir.Name
+    foreach ($target in $targets) {
+      $dest = Join-Path $target $dir.Name
       New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
       if (Test-Path $dest) { Remove-Item -Recurse -Force $dest }
       Copy-Item -Recurse -Path $dir.FullName -Destination $dest
